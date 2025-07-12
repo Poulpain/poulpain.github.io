@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+
   <meta charset="UTF-8" />
   <title>Mes pages de vente</title>
   <style>
@@ -174,7 +177,97 @@
     // Charger stock au démarrage
     chargerStock();
 
+    // Prix unitaire
+const prixUnitaire = 20; // exemple 20 euros par pack
+
+// Etat panier JS
+let panierQte = 0;
+
+// Mise à jour affichage panier
+function majAffichagePanier() {
+  if (panierQte > 0) {
+    document.getElementById('panier').style.display = 'block';
+    document.getElementById('panierQte').textContent = panierQte;
+    document.getElementById('panierTotal').textContent = (panierQte * prixUnitaire).toFixed(2);
+  } else {
+    document.getElementById('panier').style.display = 'none';
+  }
+}
+
+// Ajouter au panier (ne réduit pas le stock tout de suite)
+ajouterBtn.addEventListener('click', () => {
+  let qte = parseInt(quantiteInput.value);
+  if (isNaN(qte) || qte < 1) qte = 1;
+  if (qte > stock) {
+    alert(`Stock insuffisant. Il reste seulement ${stock} en stock.`);
+    return;
+  }
+  panierQte += qte;
+  if (panierQte > stock) {
+    alert(`Stock insuffisant pour cette quantité totale dans le panier.`);
+    panierQte -= qte;
+    return;
+  }
+  majAffichagePanier();
+});
+// Intégration PayPal
+// Charge SDK PayPal (ajoute dans <head> ou avant ce script) :
+// <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
+
+import { loadScript } from "https://cdn.jsdelivr.net/npm/@paypal/paypal-js@5.0.0/dist/paypal-js.min.js";
+
+loadScript({ "client-id": "sb", currency: "EUR" }).then(paypal => {
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+
+    // Montant à payer
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: (panierQte * prixUnitaire).toFixed(2),
+            currency_code: "EUR"
+          }
+        }]
+      });
+    },
+
+    // Confirmation paiement
+    onApprove: async (data, actions) => {
+      const details = await actions.order.capture();
+      alert('Paiement réussi ! Merci.');
+
+      // Ici on réduit le stock dans Firestore
+      const success = await reduireStock(panierQte);
+      if (success) {
+        panierQte = 0;
+        majAffichagePanier();
+      } else {
+        alert('Erreur lors de la mise à jour du stock.');
+      }
+    },
+
+    onCancel: () => {
+      alert('Paiement annulé.');
+    },
+
+    onError: err => {
+      console.error(err);
+      alert('Erreur lors du paiement.');
+    }
+  }).render('#paypal-button-container');
+});
+
   </script>
+
+  <!-- Panier -->
+<div id="panier" style="margin-top: 40px; background:#333; padding: 20px; border-radius: 12px; max-width: 400px; display:none; color:white;">
+  <h3>Panier</h3>
+  <p>Produit : Mega Booster Pack Magic</p>
+  <p>Quantité : <span id="panierQte">0</span></p>
+  <p>Total : <span id="panierTotal">0</span> €</p>
+  <div id="paypal-button-container"></div>
+</div>
 
 </body>
 </html>
