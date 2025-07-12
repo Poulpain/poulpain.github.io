@@ -116,7 +116,7 @@
 
     // Fonction pour charger le stock depuis Firestore
     async function chargerStock() {
-      const docRef = doc(db, 'produits', 'mega_booster_pack');
+      const docRef = doc(db, 'produit', 'mega_booster_pack');
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         stock = docSnap.data().stock;
@@ -137,7 +137,7 @@
 
     // Fonction pour réduire le stock dans Firestore lors de l'achat
     async function reduireStock(qte) {
-      const docRef = doc(db, 'produits', 'mega_booster_pack');
+      const docRef = doc(db, 'produit', 'mega_booster_pack');
       try {
         await runTransaction(db, async (transaction) => {
           const docSnap = await transaction.get(docRef);
