@@ -42,15 +42,8 @@
       text-align: center;
     }
     .produit img {
-      max-width: 90%; /* réduit un peu la taille de l'image */
+      max-width: 100%;
       border-radius: 12px;
-      margin-bottom: 15px;
-    }
-    .produit p {
-      text-align: left;
-      line-height: 1.5;
-      white-space: pre-line; /* respecte les retours à la ligne dans le texte */
-      margin-bottom: 15px;
     }
     button:disabled {
       opacity: 0.5;
@@ -67,21 +60,6 @@
       max-width: 400px;
       color: white;
       display: none;
-      text-align: center;
-    }
-    #viderPanierBtn {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      background-color: #d9534f;
-      color: white;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s ease;
-    }
-    #viderPanierBtn:hover:not(:disabled) {
-      background-color: #c9302c;
     }
   </style>
 
@@ -110,20 +88,20 @@
   <div class="produit">
     <h2>Mega Booster Pack Magic - 50 cartes </h2>
     <img src="mega-booster.jpg" alt="Mega Booster Pack Magic" />
-    <p>
-      Prix 7€ Booste ton expérience Magic avec ce pack !
+    <p> Prix 7€ Booste ton expérience Magic avec ce pack !
 
-      Chaque booster contient 50 cartes (des séries de 2005 à 2025):
+    Chaque booster contient 50 cartes (des séries de 2005 à 2025):
 
-      🟦 30 cartes communes
-      🟪 15 cartes uncos
-      🟨 5 cartes rares ou mythiques garanties
-      🔁 Aucun doublon
+    🟦 30 cartes communes
+    🟪 15 cartes uncos
+    🟨 5 cartes rares ou mythiques garanties
+    🔁 Aucun doublon
 
-      📌 État des cartes : bon à très bon | 📚 Langue : FR
+📌 État des cartes : bon à très bon | 📚 Langue : FR
 
-      Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par booster supplémentaire. 
-    </p>
+Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par booster supplémentaire. 
+      
+</p>
     <p>Stock restant : <span id="stockRestant">...</span></p>
     <label for="quantite">Quantité :</label>
     <input type="number" id="quantite" min="1" value="1" />
@@ -136,7 +114,6 @@
     <p>Produit : Mega Booster Pack Magic</p>
     <p>Quantité : <span id="panierQte">0</span></p>
     <p>Total : <span id="panierTotal">0</span> €</p>
-    <button id="viderPanierBtn">Vider le panier</button>
     <div id="paypal-button-container"></div>
   </div>
 
@@ -167,7 +144,6 @@
     const stockSpan = document.getElementById('stockRestant');
     const quantiteInput = document.getElementById('quantite');
     const ajouterBtn = document.getElementById('ajouterBtn');
-    const viderPanierBtn = document.getElementById('viderPanierBtn');
 
     function majAffichagePanier() {
       const panierDiv = document.getElementById('panier');
@@ -175,14 +151,8 @@
         panierDiv.style.display = 'block';
         document.getElementById('panierQte').textContent = panierQte;
         document.getElementById('panierTotal').textContent = (panierQte * prixUnitaire).toFixed(2);
-        viderPanierBtn.disabled = false;
-        viderPanierBtn.style.opacity = '1';
-        viderPanierBtn.style.cursor = 'pointer';
       } else {
         panierDiv.style.display = 'none';
-        viderPanierBtn.disabled = true;
-        viderPanierBtn.style.opacity = '0.5';
-        viderPanierBtn.style.cursor = 'not-allowed';
       }
     }
 
@@ -215,7 +185,7 @@
           }
           const currentStock = docSnap.data().stock;
           if (currentStock < qte) {
-            throw `Stock insuffisant. Stock actuel : ${currentStock}`;
+            throw Stock insuffisant. Stock actuel : ${currentStock};
           }
           transaction.update(docRef, { stock: currentStock - qte });
           stock = currentStock - qte;
@@ -233,4 +203,51 @@
       let qte = parseInt(quantiteInput.value);
       if (isNaN(qte) || qte < 1) qte = 1;
       if (qte > stock) {
-        alert(`Stock insuffisant. Il reste seulement ${stock}
+        alert(Stock insuffisant. Il reste seulement ${stock} en stock.);
+        return;
+      }
+      if (panierQte + qte > stock) {
+        alert(Stock insuffisant pour cette quantité totale dans le panier.);
+        return;
+      }
+      panierQte += qte;
+      majAffichagePanier();
+    });
+
+    chargerStock();
+
+    // Initialisation du bouton PayPal
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: (panierQte * prixUnitaire).toFixed(2),
+              currency_code: "EUR"
+            }
+          }]
+        });
+      },
+      onApprove: async (data, actions) => {
+        const details = await actions.order.capture();
+        alert('Paiement réussi ! Merci.');
+
+        const success = await reduireStock(panierQte);
+        if (success) {
+          panierQte = 0;
+          majAffichagePanier();
+        } else {
+          alert('Erreur lors de la mise à jour du stock.');
+        }
+      },
+      onCancel: () => alert('Paiement annulé.'),
+      onError: err => {
+        console.error(err);
+        alert('Erreur lors du paiement.');
+      }
+    }).render('#paypal-button-container');
+
+  </script>
+</body>
+</html>
