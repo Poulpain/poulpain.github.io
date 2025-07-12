@@ -2,103 +2,226 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Mes pages de vente</title>
+  <title>Poulpain Shop - Mega Booster Pack Magic</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
     body {
       margin: 0;
-      background-color: #000;
-      font-family: Arial, sans-serif;
+      background-color: #0b0b0b;
+      font-family: 'Poppins', Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 40px 20px;
-      color: white;
+      color: #eee;
+      min-height: 100vh;
     }
     .main-logo {
-      width: 400px;
+      width: 350px;
       margin-bottom: 50px;
       box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
       border-radius: 16px;
+      transition: transform 0.4s ease;
+      cursor: pointer;
+    }
+    .main-logo:hover {
+      transform: scale(1.05);
     }
     .container {
       display: flex;
-      gap: 40px;
+      gap: 30px;
       flex-wrap: wrap;
       justify-content: center;
+      margin-bottom: 60px;
     }
     .logo {
-      width: 100px;
+      width: 90px;
       transition: transform 0.3s ease;
       cursor: pointer;
+      filter: brightness(1.1);
     }
     .logo:hover {
       transform: scale(1.2);
+      filter: brightness(1.4);
     }
     .produit {
-      background: #222;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
+      background: linear-gradient(135deg, #111111, #222222);
+      padding: 30px 35px;
+      border-radius: 18px;
+      max-width: 430px;
       text-align: center;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+      position: relative;
     }
     .produit img {
-      max-width: 250px;
-      border-radius: 12px;
+      max-width: 280px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+      user-select: none;
+    }
+    .titre-produit {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffd700;
       margin-bottom: 15px;
+      letter-spacing: 1.2px;
+      text-shadow: 0 0 8px #ffd700cc;
+      user-select: none;
+    }
+   .prix {
+  font-size: 1.8rem; /* réduit de 2rem à 1.8rem */
+  color: #f0e6d2; /* beige clair, plus lisible sur jaune */
+  font-weight: bold;
+  animation: pulse 2s infinite;
+  margin-bottom: 15px;
+}
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 25px #ffd700cc; }
+      50% { text-shadow: 0 0 40px #fff700dd; }
+    }
+    .frais-port {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffcc00cc;
+      background: rgba(255, 215, 0, 0.12);
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 12px #ffd700aa;
+      user-select: none;
+    }
+    .frais-port svg {
+      width: 22px;
+      height: 22px;
+      fill: #ffd700;
+      filter: drop-shadow(0 0 2px #ffd700);
+      user-select: none;
+    }
+    .msg-livraison {
+      margin-top: -15px;
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      min-height: 24px;
+      user-select: none;
     }
     .description {
       text-align: left;
       white-space: pre-line;
+      margin-bottom: 20px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #ddd;
+      user-select: none;
+    }
+    .description ul {
+      margin-left: 22px;
+      padding-left: 0;
+      color: #ffe;
+      list-style: inside disc;
+      font-size: 15px;
       margin-bottom: 15px;
-      font-size: 14px;
-      line-height: 1.4;
+    }
+    label {
+      font-weight: 700;
+      color: #ffd700cc;
+      user-select: none;
+    }
+    input[type=number] {
+      width: 65px;
+      padding: 7px 10px;
+      margin-left: 12px;
+      margin-right: 18px;
+      border-radius: 8px;
+      border: none;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #111;
+      transition: box-shadow 0.3s ease;
+    }
+    input[type=number]:focus {
+      outline: none;
+      box-shadow: 0 0 10px #ffd700cc;
     }
     button {
       cursor: pointer;
-      background-color: gold;
+      background-color: #ffd700;
       border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
-      font-weight: bold;
-      color: #000;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
+      border-radius: 10px;
+      padding: 14px 35px;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: #1a1a1a;
+      box-shadow: 0 6px 15px rgba(255, 215, 0, 0.7);
+      transition: background-color 0.35s ease, box-shadow 0.35s ease;
+      user-select: none;
     }
     button:hover:not(:disabled) {
-      background-color: #ffcc00cc;
+      background-color: #fff244;
+      box-shadow: 0 8px 20px rgba(255, 235, 0, 0.9);
     }
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    input[type=number] {
-      width: 50px;
-      padding: 5px;
-      margin-left: 5px;
-      margin-right: 10px;
-      border-radius: 4px;
-      border: none;
-      text-align: center;
+    p.stock {
+      margin-top: 20px;
+      font-weight: 600;
+      color: #ccc;
+      font-size: 1rem;
+      user-select: none;
     }
     #panier {
       margin-top: 40px;
-      background: #333;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
-      color: white;
+      background: #222;
+      padding: 25px 30px;
+      border-radius: 18px;
+      max-width: 420px;
+      color: #eee;
+      box-shadow: 0 0 40px #ffd70099;
       display: none;
+      user-select: none;
+    }
+    #panier h3 {
+      margin-top: 0;
+      color: #ffd700;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+      text-shadow: 0 0 6px #ffd700cc;
+      user-select: none;
     }
     #panier p {
-      margin: 6px 0;
+      font-size: 1.1rem;
+      margin: 8px 0;
+      text-align: center;
     }
     #viderPanierBtn {
       background-color: #c0392b;
       color: white;
-      margin-top: 15px;
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px #c0392bcc;
+      transition: background-color 0.3s ease;
+      user-select: none;
     }
     #viderPanierBtn:hover {
       background-color: #e74c3c;
+      box-shadow: 0 6px 20px #e74c3ccc;
+    }
+    #paypal-button-container {
+      margin-top: 20px;
     }
   </style>
 
@@ -108,55 +231,78 @@
 <body>
 
   <!-- Logo principal -->
-  <img src="ton-logo.png" alt="Mon logo principal" class="main-logo" />
+  <img src="ton-logo.png" alt="Logo principal Poulpain Shop" class="main-logo" tabindex="0" />
 
-    <!-- Nouvelle section bienvenue -->
-  <section style="margin-bottom: 40px; text-align: center; font-size: 18px; font-weight: bold; color: gold;">
-    Bienvenue sur Poulpain Shop, retrouvez-moi également sur :
+  <!-- Section bienvenue -->
+  <section aria-label="Bienvenue" style="margin-bottom: 40px; text-align: center; font-size: 20px; font-weight: 700; color: #ffd700;">
+    Bienvenue sur <strong>Poulpain Shop</strong>, retrouvez-moi également sur :
   </section>
-  
+
   <!-- Logos secondaires -->
-  <div class="container">
-    <a href="https://lien1.com" target="_blank"><img src="logo1.png" class="logo" /></a>
-    <a href="https://lien2.com" target="_blank"><img src="logo2.png" class="logo" /></a>
-    <a href="https://www.ebay.com/usr/poulpain" target="_blank"><img src="logo3.png" class="logo" /></a>
+  <div class="container" aria-label="Liens vers autres plateformes">
+    <a href="https://lien1.com" target="_blank" aria-label="Lien vers plateforme 1"><img src="logo1.png" class="logo" alt="Logo plateforme 1" tabindex="0" /></a>
+    <a href="https://lien2.com" target="_blank" aria-label="Lien vers plateforme 2"><img src="logo2.png" class="logo" alt="Logo plateforme 2" tabindex="0" /></a>
+    <a href="https://www.ebay.com/usr/poulpain" target="_blank" aria-label="Lien vers eBay Poulpain"><img src="logo3.png" class="logo" alt="Logo eBay Poulpain" tabindex="0" /></a>
   </div>
 
   <!-- Produit -->
-  <div class="produit">
-    <h2>Mega Booster Pack Magic - 50 cartes</h2>
-    <img src="mega-booster.jpg" alt="Mega Booster Pack Magic" />
+  <article class="produit" aria-label="Produit Mega Booster Pack Magic">
+    <h2 class="titre-produit">Mega Booster Pack Magic - 50 cartes</h2>
+    <img src="mega-booster.jpg" alt="Mega Booster Pack Magic" loading="lazy" />
+
+    <p class="prix" aria-label="Prix du produit 7 euros">7 €</p>
+
+    <div class="frais-port" aria-live="polite" aria-atomic="true" role="region">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M20 8h-3V4h-2v4H9V4H7v4H4v9h16v-9zm-6 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+      <span id="texteFraisPort">Frais de port : 2,99 € (offerts dès 4 packs)</span>
+    </div>
+    <p id="msgLivraisonGratuite" class="msg-livraison" aria-live="polite" aria-atomic="true"></p>
+
     <p class="description">
-Prix 7€ - Booste ton expérience Magic avec ce pack !
-
-Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
-
-🟦 30 cartes communes  
-🟪 15 cartes uncos  
-🟨 5 cartes rares ou mythiques garanties  
-🔁 Aucun doublon
-
-📌 État : bon à très bon | 📚 Langue : FR
-
-+2 boosters ? → 1 carte rare ou mythique offerte par booster supplémentaire.
+      Booste ton expérience Magic avec ce pack !<br />
+      Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
     </p>
-    <p>Stock restant : <span id="stockRestant">...</span></p>
-    <label>Quantité :</label>
-    <input type="number" id="quantite" min="1" value="1" />
-    <button id="ajouterBtn">Ajouter au panier</button>
-  </div>
+    <ul class="description">
+      <li>🟦 30 cartes communes</li>
+      <li>🟪 15 cartes uncos</li>
+      <li>🟨 5 cartes rares ou mythiques garanties</li>
+      <li>🔁 Aucun doublon</li>
+    </ul>
+    <p class="description">
+      📌 État : bon à très bon | 📚 Langue : FR
+    </p>
+    <p class="description">
+      +2 boosters ? → 1 carte rare ou mythique offerte par booster supplémentaire.
+    </p>
+
+    <p class="stock" aria-live="polite">Stock restant : <span id="stockRestant">...</span></p>
+
+    <form id="formProduit" aria-label="Formulaire d'ajout au panier" onsubmit="return false;">
+      <label for="quantite">Quantité :</label>
+      <input
+        type="number"
+        id="quantite"
+        name="quantite"
+        min="1"
+        value="1"
+        aria-describedby="msgErreurQuantite"
+        aria-required="true"
+      />
+      <span id="msgErreurQuantite" role="alert" style="color:#ff6666; display:none; font-weight:700; margin-left: 10px;"></span>
+      <button id="ajouterBtn" type="submit" aria-label="Ajouter au panier">Ajouter au panier</button>
+    </form>
+  </article>
 
   <!-- Panier -->
-  <div id="panier">
+  <section id="panier" aria-live="polite" aria-atomic="true" role="region" aria-label="Panier d'achat">
     <h3>Panier</h3>
     <p>Produit : Mega Booster Pack Magic</p>
     <p>Quantité : <span id="panierQte">0</span></p>
     <p>Total : <span id="panierTotal">0</span> €</p>
-    <button id="viderPanierBtn">Vider le panier</button>
-    <div id="paypal-button-container" style="margin-top: 15px;"></div>
-  </div>
+    <button id="viderPanierBtn" aria-label="Vider le panier">Vider le panier</button>
+    <div id="paypal-button-container"></div>
+  </section>
 
-  <!-- Firebase + Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getFirestore, doc, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
@@ -177,6 +323,8 @@ Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
     let stock = 0;
     let panierQte = 0;
     const prixUnitaire = 7;
+    const fraisPortStandard = 2.99;
+    const livraisonGratuiteMin = 4;
 
     const stockSpan = document.getElementById('stockRestant');
     const quantiteInput = document.getElementById('quantite');
@@ -186,6 +334,9 @@ Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
     const panierTotalSpan = document.getElementById('panierTotal');
     const viderPanierBtn = document.getElementById('viderPanierBtn');
     const paypalContainer = document.getElementById('paypal-button-container');
+    const msgErreurQuantite = document.getElementById('msgErreurQuantite');
+    const msgLivraison = document.getElementById('msgLivraisonGratuite');
+    const texteFraisPort = document.getElementById('texteFraisPort');
 
     async function chargerStock() {
       const docRef = doc(db, 'produit', 'mega_booster_pack');
@@ -195,9 +346,30 @@ Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
         stockSpan.textContent = stock;
         quantiteInput.max = stock;
         ajouterBtn.disabled = stock === 0;
+        if (stock === 0) {
+          msgLivraison.textContent = "Rupture de stock, revenez bientôt !";
+        } else {
+          majMessageLivraison();
+        }
       } else {
         stockSpan.textContent = "N/A";
         ajouterBtn.disabled = true;
+        msgLivraison.textContent = "Impossible de charger le stock.";
+      }
+    }
+
+    function calculFraisPort(qte) {
+      return qte >= livraisonGratuiteMin ? 0 : fraisPortStandard;
+    }
+
+    function majMessageLivraison() {
+      if (panierQte >= livraisonGratuiteMin) {
+        msgLivraison.textContent = "🎉 Livraison gratuite appliquée !";
+        texteFraisPort.textContent = "Frais de port : Offerts dès 4 packs 🎉";
+      } else {
+        const restant = livraisonGratuiteMin - panierQte;
+        msgLivraison.textContent = `Ajoutez ${restant} pack${restant > 1 ? 's' : ''} pour la livraison gratuite !`;
+        texteFraisPort.textContent = `Frais de port : ${fraisPortStandard.toFixed(2)} € (offerts dès 4 packs)`;
       }
     }
 
@@ -205,54 +377,58 @@ Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
       if (panierQte > 0) {
         panierDiv.style.display = 'block';
         panierQteSpan.textContent = panierQte;
-        panierTotalSpan.textContent = (panierQte * prixUnitaire).toFixed(2);
+        const fraisPort = calculFraisPort(panierQte);
+        const total = panierQte * prixUnitaire + fraisPort;
+        panierTotalSpan.textContent = total.toFixed(2);
+        majMessageLivraison();
         configurerPayPal();
       } else {
         panierDiv.style.display = 'none';
         paypalContainer.innerHTML = '';
+        msgLivraison.textContent = "";
+        texteFraisPort.textContent = `Frais de port : ${fraisPortStandard.toFixed(2)} € (offerts dès 4 packs)`;
+        msgErreurQuantite.style.display = 'none';
       }
     }
 
     async function reduireStockApresPaiement(qte) {
       const docRef = doc(db, 'produit', 'mega_booster_pack');
-      await runTransaction(db, async (transaction) => {
-        const docSnap = await transaction.get(docRef);
-        const currentStock = docSnap.data().stock;
-        if (currentStock < qte) throw "Stock insuffisant.";
-        transaction.update(docRef, { stock: currentStock - qte });
-        stock = currentStock - qte;
+      try {
+        await runTransaction(db, async (transaction) => {
+          const docSnap = await transaction.get(docRef);
+          if (!docSnap.exists()) throw "Produit non trouvé !";
+          const stockActuel = docSnap.data().stock;
+          if (stockActuel < qte) throw "Stock insuffisant !";
+          transaction.update(docRef, { stock: stockActuel - qte });
+        });
+        stock -= qte;
         stockSpan.textContent = stock;
         quantiteInput.max = stock;
-        if (stock === 0) ajouterBtn.disabled = true;
-      });
-    }
-
-    function configurerPayPal() {
-      paypalContainer.innerHTML = '';
-      paypal.Buttons({
-        createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: (panierQte * prixUnitaire).toFixed(2)
-              }
-            }]
-          });
-        },
-        onApprove: async function (data, actions) {
-          await actions.order.capture();
-          await reduireStockApresPaiement(panierQte);
-          alert("Paiement réussi !");
-          panierQte = 0;
-          majAffichagePanier();
+        if (stock === 0) {
+          ajouterBtn.disabled = true;
+          msgLivraison.textContent = "Rupture de stock, revenez bientôt !";
         }
-      }).render('#paypal-button-container');
+      } catch (e) {
+        alert("Erreur lors de la mise à jour du stock : " + e);
+      }
     }
 
+    // Validation quantité + ajout panier
     ajouterBtn.addEventListener('click', () => {
-      const qte = parseInt(quantiteInput.value);
-      if (isNaN(qte) || qte < 1 || qte > stock) return alert("Quantité invalide");
-      panierQte += qte;
+      const qteChoisie = parseInt(quantiteInput.value);
+      if (isNaN(qteChoisie) || qteChoisie < 1) {
+        msgErreurQuantite.textContent = "Veuillez entrer une quantité valide (≥1).";
+        msgErreurQuantite.style.display = 'inline';
+        return;
+      }
+      if (qteChoisie > stock) {
+        msgErreurQuantite.textContent = `Stock insuffisant, max ${stock}.`;
+        msgErreurQuantite.style.display = 'inline';
+        return;
+      }
+      msgErreurQuantite.style.display = 'none';
+      panierQte += qteChoisie;
+      if (panierQte > stock) panierQte = stock;
       majAffichagePanier();
     });
 
@@ -261,7 +437,58 @@ Chaque booster contient 50 cartes (des séries de 2005 à 2025) :
       majAffichagePanier();
     });
 
+    // PayPal Buttons
+    function configurerPayPal() {
+      paypalContainer.innerHTML = '';
+      if (panierQte === 0) return;
+
+      paypal.Buttons({
+        style: {
+          shape: 'pill',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'pay',
+        },
+        createOrder: function(data, actions) {
+          const fraisPort = calculFraisPort(panierQte);
+          const total = panierQte * prixUnitaire + fraisPort;
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: total.toFixed(2),
+                currency_code: 'EUR',
+                breakdown: {
+                  item_total: { value: (panierQte * prixUnitaire).toFixed(2), currency_code: 'EUR' },
+                  shipping: { value: fraisPort.toFixed(2), currency_code: 'EUR' }
+                }
+              },
+              items: [{
+                name: 'Mega Booster Pack Magic',
+                unit_amount: { value: prixUnitaire.toFixed(2), currency_code: 'EUR' },
+                quantity: panierQte.toString(),
+                category: "PHYSICAL_GOODS"
+              }]
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            alert('Merci pour votre achat, ' + details.payer.name.given_name + ' !');
+            reduireStockApresPaiement(panierQte);
+            panierQte = 0;
+            majAffichagePanier();
+          });
+        },
+        onError: function(err) {
+          alert('Une erreur est survenue lors du paiement : ' + err);
+        }
+      }).render('#paypal-button-container');
+    }
+
+    // Initialisation
     chargerStock();
+    majAffichagePanier();
   </script>
+
 </body>
 </html>
