@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
-  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
-
   <meta charset="UTF-8" />
   <title>Mes pages de vente</title>
   <style>
@@ -55,7 +52,19 @@
     input[type=number] {
       width: 50px;
     }
+    #panier {
+      margin-top: 40px;
+      background: #333;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      color: white;
+      display: none;
+    }
   </style>
+
+  <!-- PayPal SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
 </head>
 <body>
 
@@ -86,14 +95,21 @@
     <button id="ajouterBtn">Ajouter au panier</button>
   </div>
 
+  <!-- Panier -->
+  <div id="panier">
+    <h3>Panier</h3>
+    <p>Produit : Mega Booster Pack Magic</p>
+    <p>Quantité : <span id="panierQte">0</span></p>
+    <p>Total : <span id="panierTotal">0</span> €</p>
+    <div id="paypal-button-container"></div>
+  </div>
+
   <!-- Firebase SDK + Script -->
   <script type="module">
-    // Import des fonctions Firebase (SDK modulaire)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getFirestore, doc, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
 
-    // Ta config Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCuh-opgGC3rha5j4ptxrZ1RByrx2sV1mA",
       authDomain: "mega-booster-656e5.firebaseapp.com",
@@ -104,20 +120,29 @@
       measurementId: "G-0M0FZCRTCJ"
     };
 
-    // Initialisation Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
-    // Variables globales
     let stock = 0;
+    let panierQte = 0;
+    const prixUnitaire = 20; // Prix unitaire en euros
 
-    // Elements DOM
     const stockSpan = document.getElementById('stockRestant');
     const quantiteInput = document.getElementById('quantite');
     const ajouterBtn = document.getElementById('ajouterBtn');
 
-    // Fonction pour charger le stock depuis Firestore
+    function majAffichagePanier() {
+      const panierDiv = document.getElementById('panier');
+      if (panierQte > 0) {
+        panierDiv.style.display = 'block';
+        document.getElementById('panierQte').textContent = panierQte;
+        document.getElementById('panierTotal').textContent = (panierQte * prixUnitaire).toFixed(2);
+      } else {
+        panierDiv.style.display = 'none';
+      }
+    }
+
     async function chargerStock() {
       const docRef = doc(db, 'produit', 'mega_booster_pack');
       const docSnap = await getDoc(docRef);
@@ -130,7 +155,6 @@
       }
     }
 
-    // Mise à jour interface
     function miseAJourStockInterface() {
       stockSpan.textContent = stock;
       quantiteInput.max = stock;
@@ -138,7 +162,6 @@
       ajouterBtn.disabled = stock === 0;
     }
 
-    // Fonction pour réduire le stock dans Firestore lors de l'achat
     async function reduireStock(qte) {
       const docRef = doc(db, 'produit', 'mega_booster_pack');
       try {
@@ -155,7 +178,6 @@
           stock = currentStock - qte;
         });
         miseAJourStockInterface();
-        alert("Article ajouté au panier !");
         return true;
       } catch (e) {
         alert(e);
@@ -163,111 +185,56 @@
       }
     }
 
-    // Gestion clic bouton
-    ajouterBtn.addEventListener('click', async () => {
+    // Gestion du bouton Ajouter au panier (sans réduire stock pour l'instant)
+    ajouterBtn.addEventListener('click', () => {
       let qte = parseInt(quantiteInput.value);
       if (isNaN(qte) || qte < 1) qte = 1;
       if (qte > stock) {
         alert(`Stock insuffisant. Il reste seulement ${stock} en stock.`);
         return;
       }
-      await reduireStock(qte);
+      if (panierQte + qte > stock) {
+        alert(`Stock insuffisant pour cette quantité totale dans le panier.`);
+        return;
+      }
+      panierQte += qte;
+      majAffichagePanier();
     });
 
-    // Charger stock au démarrage
     chargerStock();
 
-    // Prix unitaire
-const prixUnitaire = 20; // exemple 20 euros par pack
+    // Initialisation du bouton PayPal
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: (panierQte * prixUnitaire).toFixed(2),
+              currency_code: "EUR"
+            }
+          }]
+        });
+      },
+      onApprove: async (data, actions) => {
+        const details = await actions.order.capture();
+        alert('Paiement réussi ! Merci.');
 
-// Etat panier JS
-let panierQte = 0;
-
-// Mise à jour affichage panier
-function majAffichagePanier() {
-  if (panierQte > 0) {
-    document.getElementById('panier').style.display = 'block';
-    document.getElementById('panierQte').textContent = panierQte;
-    document.getElementById('panierTotal').textContent = (panierQte * prixUnitaire).toFixed(2);
-  } else {
-    document.getElementById('panier').style.display = 'none';
-  }
-}
-
-// Ajouter au panier (ne réduit pas le stock tout de suite)
-ajouterBtn.addEventListener('click', () => {
-  let qte = parseInt(quantiteInput.value);
-  if (isNaN(qte) || qte < 1) qte = 1;
-  if (qte > stock) {
-    alert(`Stock insuffisant. Il reste seulement ${stock} en stock.`);
-    return;
-  }
-  panierQte += qte;
-  if (panierQte > stock) {
-    alert(`Stock insuffisant pour cette quantité totale dans le panier.`);
-    panierQte -= qte;
-    return;
-  }
-  majAffichagePanier();
-});
-// Intégration PayPal
-// Charge SDK PayPal (ajoute dans <head> ou avant ce script) :
-// <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=EUR"></script>
-
-import { loadScript } from "https://cdn.jsdelivr.net/npm/@paypal/paypal-js@5.0.0/dist/paypal-js.min.js";
-
-loadScript({ "client-id": "sb", currency: "EUR" }).then(paypal => {
-  paypal.Buttons({
-    style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-
-    // Montant à payer
-    createOrder: (data, actions) => {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: (panierQte * prixUnitaire).toFixed(2),
-            currency_code: "EUR"
-          }
-        }]
-      });
-    },
-
-    // Confirmation paiement
-    onApprove: async (data, actions) => {
-      const details = await actions.order.capture();
-      alert('Paiement réussi ! Merci.');
-
-      // Ici on réduit le stock dans Firestore
-      const success = await reduireStock(panierQte);
-      if (success) {
-        panierQte = 0;
-        majAffichagePanier();
-      } else {
-        alert('Erreur lors de la mise à jour du stock.');
+        const success = await reduireStock(panierQte);
+        if (success) {
+          panierQte = 0;
+          majAffichagePanier();
+        } else {
+          alert('Erreur lors de la mise à jour du stock.');
+        }
+      },
+      onCancel: () => alert('Paiement annulé.'),
+      onError: err => {
+        console.error(err);
+        alert('Erreur lors du paiement.');
       }
-    },
-
-    onCancel: () => {
-      alert('Paiement annulé.');
-    },
-
-    onError: err => {
-      console.error(err);
-      alert('Erreur lors du paiement.');
-    }
-  }).render('#paypal-button-container');
-});
+    }).render('#paypal-button-container');
 
   </script>
-
-  <!-- Panier -->
-<div id="panier" style="margin-top: 40px; background:#333; padding: 20px; border-radius: 12px; max-width: 400px; display:none; color:white;">
-  <h3>Panier</h3>
-  <p>Produit : Mega Booster Pack Magic</p>
-  <p>Quantité : <span id="panierQte">0</span></p>
-  <p>Total : <span id="panierTotal">0</span> €</p>
-  <div id="paypal-button-container"></div>
-</div>
-
 </body>
 </html>
