@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Mes pages de vente</title>
   <style>
     body {
@@ -40,74 +40,89 @@
       transform: scale(1.2);
     }
 
+    /* Boutique */
     .boutique {
       max-width: 600px;
       background-color: #111;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      text-align: center;
+      color: white;
+      margin-bottom: 50px;
     }
 
-    .produit {
+    .boutique img {
+      max-width: 100%;
+      border-radius: 12px;
       margin-bottom: 15px;
-      border-bottom: 1px solid #333;
-      padding-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
 
-    button {
-      padding: 5px 10px;
+    .boutique input[type=number] {
+      width: 60px;
+      padding: 5px;
+      border-radius: 6px;
       border: none;
-      background-color: #fff;
-      color: #000;
-      cursor: pointer;
-      border-radius: 4px;
-      margin-left: 10px;
+      text-align: center;
+      margin-right: 10px;
     }
 
-    button:disabled {
+    .boutique button {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: white;
+      color: black;
+      transition: background-color 0.3s ease;
+    }
+
+    .boutique button:disabled {
       background-color: #555;
       color: #aaa;
       cursor: not-allowed;
     }
 
-    ul {
-      padding-left: 20px;
+    .boutique button:hover:not(:disabled) {
+      background-color: #ccc;
+    }
+
+    .panier {
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .panier ul {
+      list-style: none;
+      padding-left: 0;
       margin-top: 0;
     }
 
-    .quantite-input {
-      width: 50px;
-      padding: 4px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      text-align: center;
-      margin-left: 10px;
+    .panier li {
+      margin-bottom: 10px;
     }
 
-    .panier-item {
-      display: flex;
-      justify-content: space-between;
-      max-width: 400px;
-    }
-
-    .panier-item button {
-      background-color: #ff4444;
-      color: white;
-      padding: 2px 6px;
-      font-size: 0.9em;
-      border-radius: 4px;
-      margin-left: 10px;
+    .total {
+      font-weight: bold;
+      font-size: 1.2em;
     }
 
     .vider-btn {
-      background-color: #555;
-      color: white;
       margin-top: 10px;
+      background-color: #a00;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
     }
 
+    .vider-btn:disabled {
+      background-color: #555;
+      color: #aaa;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -128,185 +143,105 @@
     </a>
   </div>
 
-  <!-- Boutique intégrée -->
+  <!-- Boutique -->
   <div class="boutique">
-    <h2>Boutique</h2>
-    <div id="produits"></div>
+    <h2>Mega Booster Pack Magic</h2>
+    <img src="https://via.placeholder.com/500x300.png?text=Mega+Booster+Pack+Magic" alt="Mega Booster Pack Magic" />
+    <p>Découvrez le Mega Booster Pack Magic, votre clé vers des cartes rares et puissantes. Boostez votre deck et dominez vos adversaires !</p>
+    <div>
+      <label for="quantite">Quantité (stock max 5) :</label>
+      <input type="number" id="quantite" min="1" max="5" value="1" />
+      <button id="ajouterBtn">Ajouter au panier</button>
+    </div>
 
-    <hr>
-    <h3>Panier</h3>
-    <ul id="panier"></ul>
-    <p>Total : <strong><span id="total">0</span> €</strong></p>
+    <div class="panier">
+      <h3>Panier</h3>
+      <ul id="listePanier"><li>Le panier est vide.</li></ul>
+      <p class="total">Total : <span id="total">0.00</span> €</p>
+      <button id="viderPanierBtn" class="vider-btn" disabled>Vider le panier</button>
 
-    <button class="vider-btn" onclick="viderPanier()" id="btnVider" disabled>Vider le panier</button>
-
-    <form id="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" onsubmit="return verifierStockAvantPaiement()">
-      <input type="hidden" name="cmd" value="_xclick">
-      <input type="hidden" name="business" value="ton-email@paypal.com"> <!-- Remplace par ton email PayPal -->
-      <input type="hidden" name="currency_code" value="EUR">
-      <input type="hidden" name="item_name" id="paypalItemName" value="">
-      <input type="hidden" name="amount" id="paypalAmount" value="">
-      <button type="submit" id="btnPayer" disabled>Payer avec PayPal</button>
-    </form>
+      <form id="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" onsubmit="return verifierStockAvantPaiement()">
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="business" value="ton-email@paypal.com" /> <!-- Mets ton email PayPal ici -->
+        <input type="hidden" name="currency_code" value="EUR" />
+        <input type="hidden" name="item_name" id="paypalItemName" value="Mega Booster Pack Magic" />
+        <input type="hidden" name="amount" id="paypalAmount" value="0" />
+        <button type="submit" id="payerBtn" disabled>Payer avec PayPal</button>
+      </form>
+    </div>
   </div>
 
   <script>
-    // Produits avec stock et id
-    const produits = [
-      { id: 1, nom: "T-shirt", prix: 20, stock: 3 },
-      { id: 2, nom: "Casquette", prix: 15, stock: 2 },
-      { id: 3, nom: "Sac", prix: 30, stock: 1 }
-    ];
+    const prixUnitaire = 50; // € par pack
+    let stock = 5; // stock initial
+    let panierQuantite = 0;
 
-    // Panier sous forme tableau d'objets {nom, prix, quantite}
-    let panier = [];
+    const quantiteInput = document.getElementById('quantite');
+    const ajouterBtn = document.getElementById('ajouterBtn');
+    const listePanier = document.getElementById('listePanier');
+    const totalSpan = document.getElementById('total');
+    const viderBtn = document.getElementById('viderPanierBtn');
+    const payerBtn = document.getElementById('payerBtn');
+    const paypalAmount = document.getElementById('paypalAmount');
 
-    function afficherProduits() {
-      const container = document.getElementById("produits");
-      container.innerHTML = "";
-
-      produits.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "produit";
-        div.innerHTML = `
-          <div>
-            <strong>${p.nom}</strong> - ${p.prix} € (Stock : <span id="stock-${p.id}">${p.stock}</span>)
-          </div>
-          <div>
-            <input type="number" min="1" max="${p.stock}" value="1" class="quantite-input" id="qty-${p.id}" ${p.stock === 0 ? 'disabled' : ''}>
-            <button onclick="ajouterAuPanier(${p.id})" ${p.stock === 0 ? "disabled" : ""}>Ajouter</button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function ajouterAuPanier(id) {
-      const produit = produits.find(p => p.id === id);
-      if (!produit || produit.stock === 0) return;
-
-      const inputQty = document.getElementById(`qty-${id}`);
-      let quantite = parseInt(inputQty.value);
-      if (isNaN(quantite) || quantite < 1) quantite = 1;
-      if (quantite > produit.stock) {
-        alert(`Il ne reste que ${produit.stock} ${produit.nom}(s) en stock.`);
-        quantite = produit.stock;
-      }
-
-      // Vérifier si produit est déjà dans le panier
-      const itemPanier = panier.find(item => item.nom === produit.nom);
-      if (itemPanier) {
-        // Vérifier que la nouvelle quantité ne dépasse pas le stock
-        if (itemPanier.quantite + quantite > produit.stock + itemPanier.quantite) {
-          alert(`Stock insuffisant pour ajouter cette quantité.`);
-          return;
-        }
-        itemPanier.quantite += quantite;
+    function miseAJourInterface() {
+      if(panierQuantite === 0) {
+        listePanier.innerHTML = '<li>Le panier est vide.</li>';
+        viderBtn.disabled = true;
+        payerBtn.disabled = true;
+        totalSpan.textContent = "0.00";
+        paypalAmount.value = "0";
       } else {
-        panier.push({ nom: produit.nom, prix: produit.prix, quantite: quantite });
+        listePanier.innerHTML = `<li>Mega Booster Pack Magic x ${panierQuantite} = ${(prixUnitaire * panierQuantite).toFixed(2)} €</li>`;
+        viderBtn.disabled = false;
+        payerBtn.disabled = false;
+        totalSpan.textContent = (prixUnitaire * panierQuantite).toFixed(2);
+        paypalAmount.value = (prixUnitaire * panierQuantite).toFixed(2);
       }
-
-      // Met à jour le stock produit
-      produit.stock -= quantite;
-
-      // Met à jour l'affichage
-      afficherProduits();
-      afficherPanier();
     }
 
-    function afficherPanier() {
-      const liste = document.getElementById("panier");
-      const totalEl = document.getElementById("total");
-      const itemNameEl = document.getElementById("paypalItemName");
-      const amountEl = document.getElementById("paypalAmount");
-      const btnVider = document.getElementById("btnVider");
-      const btnPayer = document.getElementById("btnPayer");
-
-      liste.innerHTML = "";
-      let total = 0;
-      let noms = [];
-
-      if (panier.length === 0) {
-        liste.innerHTML = "<li>Le panier est vide.</li>";
-        btnVider.disabled = true;
-        btnPayer.disabled = true;
-        totalEl.innerText = "0.00";
-        itemNameEl.value = "";
-        amountEl.value = "";
+    function ajouterAuPanier() {
+      let qte = parseInt(quantiteInput.value);
+      if (isNaN(qte) || qte < 1) qte = 1;
+      if (qte > stock) {
+        alert(`Stock insuffisant. Il reste seulement ${stock} en stock.`);
         return;
       }
+      panierQuantite += qte;
+      stock -= qte;
 
-      panier.forEach(item => {
-        const li = document.createElement("li");
-        li.className = "panier-item";
-        li.innerHTML = `
-          <span>${item.nom} - ${item.prix} € x ${item.quantite} = ${(item.prix * item.quantite).toFixed(2)} €</span>
-          <button onclick="retirerDuPanier('${item.nom}')">x</button>
-        `;
-        liste.appendChild(li);
-        total += item.prix * item.quantite;
-        for(let i=0; i<item.quantite; i++) {
-          noms.push(item.nom);
-        }
-      });
+      quantiteInput.max = stock;
+      quantiteInput.value = stock > 0 ? 1 : 0;
 
-      totalEl.innerText = total.toFixed(2);
-      itemNameEl.value = noms.join(", ");
-      amountEl.value = total.toFixed(2);
-      btnVider.disabled = false;
-      btnPayer.disabled = false;
-    }
+      if(stock === 0) {
+        ajouterBtn.disabled = true;
+      }
 
-    function retirerDuPanier(nom) {
-      const index = panier.findIndex(item => item.nom === nom);
-      if (index === -1) return;
-
-      const item = panier[index];
-      // Remettre le stock
-      const produit = produits.find(p => p.nom === nom);
-      if (produit) produit.stock += item.quantite;
-
-      panier.splice(index, 1);
-      afficherProduits();
-      afficherPanier();
+      miseAJourInterface();
     }
 
     function viderPanier() {
-      // Remet le stock à l'état initial
-      panier.forEach(item => {
-        const produit = produits.find(p => p.nom === item.nom);
-        if (produit) produit.stock += item.quantite;
-      });
-      panier = [];
-      afficherProduits();
-      afficherPanier();
+      stock += panierQuantite;
+      panierQuantite = 0;
+      quantiteInput.max = stock;
+      quantiteInput.value = stock > 0 ? 1 : 0;
+      ajouterBtn.disabled = stock === 0;
+      miseAJourInterface();
     }
 
     function verifierStockAvantPaiement() {
-      const erreurs = [];
-      const quantites = {};
-
-      panier.forEach(item => {
-        quantites[item.nom] = (quantites[item.nom] || 0) + item.quantite;
-      });
-
-      for (let nom in quantites) {
-        const produit = produits.find(p => p.nom === nom);
-        if (!produit || produit.stock < 0) {
-          erreurs.push(`${nom} est en rupture de stock.`);
-        }
-      }
-
-      if (erreurs.length > 0) {
-        alert("Paiement bloqué :\n" + erreurs.join("\n"));
+      if(panierQuantite === 0) {
+        alert("Le panier est vide.");
         return false;
       }
-
       return true;
     }
 
-    afficherProduits();
-    afficherPanier();
+    ajouterBtn.addEventListener('click', ajouterAuPanier);
+    viderBtn.addEventListener('click', viderPanier);
+
+    miseAJourInterface();
   </script>
+
 </body>
 </html>
