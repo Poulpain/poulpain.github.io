@@ -42,8 +42,30 @@
       text-align: center;
     }
     .produit img {
-      max-width: 100%;
+      max-width: 250px; /* taille réduite */
       border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .description {
+      text-align: left;
+      white-space: pre-line; /* pour gérer les retours à la ligne */
+      margin-bottom: 15px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    button {
+      cursor: pointer;
+      background-color: gold;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-weight: bold;
+      color: #000;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover:not(:disabled) {
+      background-color: #ffcc00cc;
     }
     button:disabled {
       opacity: 0.5;
@@ -51,6 +73,12 @@
     }
     input[type=number] {
       width: 50px;
+      padding: 5px;
+      margin-left: 5px;
+      margin-right: 10px;
+      border-radius: 4px;
+      border: none;
+      text-align: center;
     }
     #panier {
       margin-top: 40px;
@@ -60,6 +88,17 @@
       max-width: 400px;
       color: white;
       display: none;
+    }
+    #panier p {
+      margin: 6px 0;
+    }
+    #viderPanierBtn {
+      background-color: #c0392b;
+      color: white;
+      margin-top: 15px;
+    }
+    #viderPanierBtn:hover {
+      background-color: #e74c3c;
     }
   </style>
 
@@ -86,9 +125,22 @@
 
   <!-- Section boutique -->
   <div class="produit">
-    <h2>Mega Booster Pack Magic</h2>
+    <h2>Mega Booster Pack Magic - 50 cartes</h2>
     <img src="mega-booster.jpg" alt="Mega Booster Pack Magic" />
-    <p>Boostez votre expérience Magic avec ce pack exclusif !</p>
+    <p class="description">
+Prix 7€ - Booste ton expérience Magic avec ce pack !
+
+Chaque booster contient 50 cartes (des séries de 2005 à 2025):
+
+🟦 30 cartes communes
+🟪 15 cartes uncos
+🟨 5 cartes rares ou mythiques garanties
+🔁 Aucun doublon
+
+📌 État des cartes : bon à très bon | 📚 Langue : FR
+
+Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par booster supplémentaire.
+    </p>
     <p>Stock restant : <span id="stockRestant">...</span></p>
     <label for="quantite">Quantité :</label>
     <input type="number" id="quantite" min="1" value="1" />
@@ -101,10 +153,11 @@
     <p>Produit : Mega Booster Pack Magic</p>
     <p>Quantité : <span id="panierQte">0</span></p>
     <p>Total : <span id="panierTotal">0</span> €</p>
-    <div id="paypal-button-container"></div>
+    <button id="viderPanierBtn">Vider le panier</button>
+    <div id="paypal-button-container" style="margin-top: 15px;"></div>
   </div>
 
-  <!-- Firebase SDK + Script -->
+  <!-- Firebase + Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getFirestore, doc, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
@@ -126,18 +179,21 @@
 
     let stock = 0;
     let panierQte = 0;
-    const prixUnitaire = 20; // Prix unitaire en euros
+    const prixUnitaire = 7; // Prix unitaire en euros
 
     const stockSpan = document.getElementById('stockRestant');
     const quantiteInput = document.getElementById('quantite');
     const ajouterBtn = document.getElementById('ajouterBtn');
+    const panierDiv = document.getElementById('panier');
+    const panierQteSpan = document.getElementById('panierQte');
+    const panierTotalSpan = document.getElementById('panierTotal');
+    const viderPanierBtn = document.getElementById('viderPanierBtn');
 
     function majAffichagePanier() {
-      const panierDiv = document.getElementById('panier');
       if (panierQte > 0) {
         panierDiv.style.display = 'block';
-        document.getElementById('panierQte').textContent = panierQte;
-        document.getElementById('panierTotal').textContent = (panierQte * prixUnitaire).toFixed(2);
+        panierQteSpan.textContent = panierQte;
+        panierTotalSpan.textContent = (panierQte * prixUnitaire).toFixed(2);
       } else {
         panierDiv.style.display = 'none';
       }
@@ -148,6 +204,7 @@
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         stock = docSnap.data().stock;
+        console.log("Stock chargé :", stock);
         miseAJourStockInterface();
       } else {
         stockSpan.textContent = "N/A";
@@ -172,7 +229,7 @@
           }
           const currentStock = docSnap.data().stock;
           if (currentStock < qte) {
-            throw Stock insuffisant. Stock actuel : ${currentStock};
+            throw `Stock insuffisant. Stock actuel : ${currentStock}`;
           }
           transaction.update(docRef, { stock: currentStock - qte });
           stock = currentStock - qte;
@@ -185,56 +242,4 @@
       }
     }
 
-    // Gestion du bouton Ajouter au panier (sans réduire stock pour l'instant)
-    ajouterBtn.addEventListener('click', () => {
-      let qte = parseInt(quantiteInput.value);
-      if (isNaN(qte) || qte < 1) qte = 1;
-      if (qte > stock) {
-        alert(Stock insuffisant. Il reste seulement ${stock} en stock.);
-        return;
-      }
-      if (panierQte + qte > stock) {
-        alert(Stock insuffisant pour cette quantité totale dans le panier.);
-        return;
-      }
-      panierQte += qte;
-      majAffichagePanier();
-    });
-
-    chargerStock();
-
-    // Initialisation du bouton PayPal
-    paypal.Buttons({
-      style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: (panierQte * prixUnitaire).toFixed(2),
-              currency_code: "EUR"
-            }
-          }]
-        });
-      },
-      onApprove: async (data, actions) => {
-        const details = await actions.order.capture();
-        alert('Paiement réussi ! Merci.');
-
-        const success = await reduireStock(panierQte);
-        if (success) {
-          panierQte = 0;
-          majAffichagePanier();
-        } else {
-          alert('Erreur lors de la mise à jour du stock.');
-        }
-      },
-      onCancel: () => alert('Paiement annulé.'),
-      onError: err => {
-        console.error(err);
-        alert('Erreur lors du paiement.');
-      }
-    }).render('#paypal-button-container');
-
-  </script>
-</body>
-</html>
+    ajouterBtn.addEventListener('click', () =>
