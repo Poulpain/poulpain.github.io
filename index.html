@@ -42,13 +42,13 @@
       text-align: center;
     }
     .produit img {
-      max-width: 250px;
+      max-width: 250px; /* taille réduite */
       border-radius: 12px;
       margin-bottom: 15px;
     }
     .description {
       text-align: left;
-      white-space: pre-line;
+      white-space: pre-line; /* pour gérer les retours à la ligne */
       margin-bottom: 15px;
       font-size: 14px;
       line-height: 1.4;
@@ -144,7 +144,7 @@ Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par
     <p>Stock restant : <span id="stockRestant">...</span></p>
     <label for="quantite">Quantité :</label>
     <input type="number" id="quantite" min="1" value="1" />
-    <button id="ajouterBtn" disabled>Ajouter au panier</button>
+    <button id="ajouterBtn">Ajouter au panier</button>
   </div>
 
   <!-- Panier -->
@@ -174,12 +174,12 @@ Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par
     };
 
     const app = initializeApp(firebaseConfig);
-    getAnalytics(app);
+    const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
     let stock = 0;
     let panierQte = 0;
-    const prixUnitaire = 7;
+    const prixUnitaire = 7; // Prix unitaire en euros
 
     const stockSpan = document.getElementById('stockRestant');
     const quantiteInput = document.getElementById('quantite');
@@ -189,34 +189,6 @@ Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par
     const panierTotalSpan = document.getElementById('panierTotal');
     const viderPanierBtn = document.getElementById('viderPanierBtn');
 
-    // Mise à jour de l'interface stock
-    function miseAJourStockInterface() {
-      stockSpan.textContent = stock;
-      quantiteInput.max = stock;
-      quantiteInput.value = stock > 0 ? 1 : 0;
-      ajouterBtn.disabled = stock === 0;
-    }
-
-    // Charger le stock depuis Firestore
-    async function chargerStock() {
-      try {
-        const docRef = doc(db, 'produit', 'mega_booster_pack');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          stock = docSnap.data().stock;
-          console.log("Stock chargé :", stock);
-          miseAJourStockInterface();
-        } else {
-          stockSpan.textContent = "N/A";
-          alert("Produit non trouvé dans la base !");
-        }
-      } catch (e) {
-        console.error("Erreur lors du chargement du stock :", e);
-        stockSpan.textContent = "Erreur";
-      }
-    }
-
-    // Met à jour l'affichage du panier
     function majAffichagePanier() {
       if (panierQte > 0) {
         panierDiv.style.display = 'block';
@@ -227,62 +199,47 @@ Si tu commandes plus de 2 boosters, une carte rare ou mythique sera ajoutée par
       }
     }
 
-    // Réduit le stock dans Firestore via transaction
+    async function chargerStock() {
+      const docRef = doc(db, 'produit', 'mega_booster_pack');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        stock = docSnap.data().stock;
+        console.log("Stock chargé :", stock);
+        miseAJourStockInterface();
+      } else {
+        stockSpan.textContent = "N/A";
+        alert("Produit non trouvé dans la base !");
+      }
+    }
+
+    function miseAJourStockInterface() {
+      stockSpan.textContent = stock;
+      quantiteInput.max = stock;
+      quantiteInput.value = stock > 0 ? 1 : 0;
+      ajouterBtn.disabled = stock === 0;
+    }
+
     async function reduireStock(qte) {
       const docRef = doc(db, 'produit', 'mega_booster_pack');
       try {
         await runTransaction(db, async (transaction) => {
           const docSnap = await transaction.get(docRef);
-          if (!docSnap.exists()) throw "Produit non trouvé !";
-
+          if (!docSnap.exists()) {
+            throw "Produit non trouvé dans la transaction !";
+          }
           const currentStock = docSnap.data().stock;
-          if (currentStock < qte) throw `Stock insuffisant (actuel : ${currentStock})`;
-
+          if (currentStock < qte) {
+            throw `Stock insuffisant. Stock actuel : ${currentStock}`;
+          }
           transaction.update(docRef, { stock: currentStock - qte });
           stock = currentStock - qte;
         });
         miseAJourStockInterface();
         return true;
-      } catch (error) {
-        alert(error);
+      } catch (e) {
+        alert(e);
         return false;
       }
     }
 
-    // Ajout au panier
-    ajouterBtn.addEventListener('click', async () => {
-      const qteDemandee = Number(quantiteInput.value);
-      if (qteDemandee <= 0 || qteDemandee > stock) {
-        alert("Quantité invalide ou dépasse le stock disponible.");
-        return;
-      }
-
-      const ok = await reduireStock(qteDemandee);
-      if (ok) {
-        panierQte += qteDemandee;
-        majAffichagePanier();
-      }
-    });
-
-    // Vider le panier
-    viderPanierBtn.addEventListener('click', () => {
-      panierQte = 0;
-      majAffichagePanier();
-      chargerStock(); // Recharge le stock en cas d’annulation (optionnel)
-      quantiteInput.value = 1;
-    });
-
-    // Limite la quantité saisie
-    quantiteInput.addEventListener('input', () => {
-      let val = Number(quantiteInput.value);
-      if (val > stock) quantiteInput.value = stock;
-      if (val < 1) quantiteInput.value = 1;
-    });
-
-    // Charger le stock au démarrage
-    chargerStock();
-
-  </script>
-
-</body>
-</html>
+    ajouterBtn.addEventListener('click', () =>
