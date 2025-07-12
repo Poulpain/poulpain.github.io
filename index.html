@@ -7,121 +7,50 @@
     body {
       margin: 0;
       background-color: #000;
-      color: white;
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 40px 20px;
+      color: white;
     }
-
     .main-logo {
       width: 400px;
       margin-bottom: 50px;
       box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
       border-radius: 16px;
     }
-
     .container {
       display: flex;
       gap: 40px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 50px;
     }
-
     .logo {
       width: 100px;
       transition: transform 0.3s ease;
       cursor: pointer;
     }
-
     .logo:hover {
       transform: scale(1.2);
     }
-
-    /* Boutique */
-    .boutique {
-      max-width: 600px;
-      background-color: #111;
+    .produit {
+      background: #222;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      border-radius: 12px;
+      max-width: 400px;
       text-align: center;
-      color: white;
-      margin-bottom: 50px;
     }
-
-    .boutique img {
+    .produit img {
       max-width: 100%;
       border-radius: 12px;
-      margin-bottom: 15px;
     }
-
-    .boutique input[type=number] {
-      width: 60px;
-      padding: 5px;
-      border-radius: 6px;
-      border: none;
-      text-align: center;
-      margin-right: 10px;
-    }
-
-    .boutique button {
-      padding: 8px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      background-color: white;
-      color: black;
-      transition: background-color 0.3s ease;
-    }
-
-    .boutique button:disabled {
-      background-color: #555;
-      color: #aaa;
+    button:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
     }
-
-    .boutique button:hover:not(:disabled) {
-      background-color: #ccc;
-    }
-
-    .panier {
-      margin-top: 30px;
-      text-align: left;
-    }
-
-    .panier ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 0;
-    }
-
-    .panier li {
-      margin-bottom: 10px;
-    }
-
-    .total {
-      font-weight: bold;
-      font-size: 1.2em;
-    }
-
-    .vider-btn {
-      margin-top: 10px;
-      background-color: #a00;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
-
-    .vider-btn:disabled {
-      background-color: #555;
-      color: #aaa;
-      cursor: not-allowed;
+    input[type=number] {
+      width: 50px;
     }
   </style>
 </head>
@@ -143,104 +72,108 @@
     </a>
   </div>
 
-  <!-- Boutique -->
-  <div class="boutique">
+  <!-- Section boutique -->
+  <div class="produit">
     <h2>Mega Booster Pack Magic</h2>
-    <img src="https://via.placeholder.com/500x300.png?text=Mega+Booster+Pack+Magic" alt="Mega Booster Pack Magic" />
-    <p>Découvrez le Mega Booster Pack Magic, votre clé vers des cartes rares et puissantes. Boostez votre deck et dominez vos adversaires !</p>
-    <div>
-      <label for="quantite">Quantité (stock max 5) :</label>
-      <input type="number" id="quantite" min="1" max="5" value="1" />
-      <button id="ajouterBtn">Ajouter au panier</button>
-    </div>
-
-    <div class="panier">
-      <h3>Panier</h3>
-      <ul id="listePanier"><li>Le panier est vide.</li></ul>
-      <p class="total">Total : <span id="total">0.00</span> €</p>
-      <button id="viderPanierBtn" class="vider-btn" disabled>Vider le panier</button>
-
-      <form id="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" onsubmit="return verifierStockAvantPaiement()">
-        <input type="hidden" name="cmd" value="_xclick" />
-        <input type="hidden" name="business" value="ton-email@paypal.com" /> <!-- Mets ton email PayPal ici -->
-        <input type="hidden" name="currency_code" value="EUR" />
-        <input type="hidden" name="item_name" id="paypalItemName" value="Mega Booster Pack Magic" />
-        <input type="hidden" name="amount" id="paypalAmount" value="0" />
-        <button type="submit" id="payerBtn" disabled>Payer avec PayPal</button>
-      </form>
-    </div>
+    <img src="mega-booster.jpg" alt="Mega Booster Pack Magic" />
+    <p>Boostez votre expérience Magic avec ce pack exclusif !</p>
+    <p>Stock restant : <span id="stockRestant">...</span></p>
+    <label for="quantite">Quantité :</label>
+    <input type="number" id="quantite" min="1" value="1" />
+    <button id="ajouterBtn">Ajouter au panier</button>
   </div>
 
-  <script>
-    const prixUnitaire = 50; // € par pack
-    let stock = 5; // stock initial
-    let panierQuantite = 0;
+  <!-- Firebase SDK + Script -->
+  <script type="module">
+    // Import des fonctions Firebase (SDK modulaire)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
 
+    // Ta config Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuh-opgGC3rha5j4ptxrZ1RByrx2sV1mA",
+      authDomain: "mega-booster-656e5.firebaseapp.com",
+      projectId: "mega-booster-656e5",
+      storageBucket: "mega-booster-656e5.firebasestorage.app",
+      messagingSenderId: "568395965944",
+      appId: "1:568395965944:web:cc490bb3ef04f67b9a220d",
+      measurementId: "G-0M0FZCRTCJ"
+    };
+
+    // Initialisation Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // Variables globales
+    let stock = 0;
+
+    // Elements DOM
+    const stockSpan = document.getElementById('stockRestant');
     const quantiteInput = document.getElementById('quantite');
     const ajouterBtn = document.getElementById('ajouterBtn');
-    const listePanier = document.getElementById('listePanier');
-    const totalSpan = document.getElementById('total');
-    const viderBtn = document.getElementById('viderPanierBtn');
-    const payerBtn = document.getElementById('payerBtn');
-    const paypalAmount = document.getElementById('paypalAmount');
 
-    function miseAJourInterface() {
-      if(panierQuantite === 0) {
-        listePanier.innerHTML = '<li>Le panier est vide.</li>';
-        viderBtn.disabled = true;
-        payerBtn.disabled = true;
-        totalSpan.textContent = "0.00";
-        paypalAmount.value = "0";
+    // Fonction pour charger le stock depuis Firestore
+    async function chargerStock() {
+      const docRef = doc(db, 'produits', 'mega_booster_pack');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        stock = docSnap.data().stock;
+        miseAJourStockInterface();
       } else {
-        listePanier.innerHTML = `<li>Mega Booster Pack Magic x ${panierQuantite} = ${(prixUnitaire * panierQuantite).toFixed(2)} €</li>`;
-        viderBtn.disabled = false;
-        payerBtn.disabled = false;
-        totalSpan.textContent = (prixUnitaire * panierQuantite).toFixed(2);
-        paypalAmount.value = (prixUnitaire * panierQuantite).toFixed(2);
+        stockSpan.textContent = "N/A";
+        alert("Produit non trouvé dans la base !");
       }
     }
 
-    function ajouterAuPanier() {
+    // Mise à jour interface
+    function miseAJourStockInterface() {
+      stockSpan.textContent = stock;
+      quantiteInput.max = stock;
+      quantiteInput.value = stock > 0 ? 1 : 0;
+      ajouterBtn.disabled = stock === 0;
+    }
+
+    // Fonction pour réduire le stock dans Firestore lors de l'achat
+    async function reduireStock(qte) {
+      const docRef = doc(db, 'produits', 'mega_booster_pack');
+      try {
+        await runTransaction(db, async (transaction) => {
+          const docSnap = await transaction.get(docRef);
+          if (!docSnap.exists()) {
+            throw "Produit non trouvé dans la transaction !";
+          }
+          const currentStock = docSnap.data().stock;
+          if (currentStock < qte) {
+            throw `Stock insuffisant. Stock actuel : ${currentStock}`;
+          }
+          transaction.update(docRef, { stock: currentStock - qte });
+          stock = currentStock - qte;
+        });
+        miseAJourStockInterface();
+        alert("Article ajouté au panier !");
+        return true;
+      } catch (e) {
+        alert(e);
+        return false;
+      }
+    }
+
+    // Gestion clic bouton
+    ajouterBtn.addEventListener('click', async () => {
       let qte = parseInt(quantiteInput.value);
       if (isNaN(qte) || qte < 1) qte = 1;
       if (qte > stock) {
         alert(`Stock insuffisant. Il reste seulement ${stock} en stock.`);
         return;
       }
-      panierQuantite += qte;
-      stock -= qte;
+      await reduireStock(qte);
+    });
 
-      quantiteInput.max = stock;
-      quantiteInput.value = stock > 0 ? 1 : 0;
+    // Charger stock au démarrage
+    chargerStock();
 
-      if(stock === 0) {
-        ajouterBtn.disabled = true;
-      }
-
-      miseAJourInterface();
-    }
-
-    function viderPanier() {
-      stock += panierQuantite;
-      panierQuantite = 0;
-      quantiteInput.max = stock;
-      quantiteInput.value = stock > 0 ? 1 : 0;
-      ajouterBtn.disabled = stock === 0;
-      miseAJourInterface();
-    }
-
-    function verifierStockAvantPaiement() {
-      if(panierQuantite === 0) {
-        alert("Le panier est vide.");
-        return false;
-      }
-      return true;
-    }
-
-    ajouterBtn.addEventListener('click', ajouterAuPanier);
-    viderBtn.addEventListener('click', viderPanier);
-
-    miseAJourInterface();
   </script>
 
 </body>
