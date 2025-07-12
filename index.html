@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mes pages de vente</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .main-logo {
+      width: 400px;
+      margin-bottom: 50px;
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+
+    .logo {
+      width: 100px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      transform: scale(1.2);
+    }
+
+    .boutique {
+      max-width: 600px;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    .produit {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      background-color: #fff;
+      color: #000;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+    button:disabled {
+      background-color: #555;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-top: 0;
+    }
+
+    .quantite-input {
+      width: 50px;
+      padding: 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      text-align: center;
+      margin-left: 10px;
+    }
+
+    .panier-item {
+      display: flex;
+      justify-content: space-between;
+      max-width: 400px;
+    }
+
+    .panier-item button {
+      background-color: #ff4444;
+      color: white;
+      padding: 2px 6px;
+      font-size: 0.9em;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+    .vider-btn {
+      background-color: #555;
+      color: white;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Logo principal -->
+  <img src="ton-logo.png" alt="Mon logo principal" class="main-logo">
+
+  <!-- Logos secondaires -->
+  <div class="container">
+    <a href="https://lien1.com" target="_blank">
+      <img src="logo1.png" alt="Logo 1" class="logo">
+    </a>
+    <a href="https://lien2.com" target="_blank">
+      <img src="logo2.png" alt="Logo 2" class="logo">
+    </a>
+    <a href="https://www.ebay.com/usr/poulpain" target="_blank">
+      <img src="logo3.png" alt="Logo 3" class="logo">
+    </a>
+  </div>
+
+  <!-- Boutique intégrée -->
+  <div class="boutique">
+    <h2>Boutique</h2>
+    <div id="produits"></div>
+
+    <hr>
+    <h3>Panier</h3>
+    <ul id="panier"></ul>
+    <p>Total : <strong><span id="total">0</span> €</strong></p>
+
+    <button class="vider-btn" onclick="viderPanier()" id="btnVider" disabled>Vider le panier</button>
+
+    <form id="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" onsubmit="return verifierStockAvantPaiement()">
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="ton-email@paypal.com"> <!-- Remplace par ton email PayPal -->
+      <input type="hidden" name="currency_code" value="EUR">
+      <input type="hidden" name="item_name" id="paypalItemName" value="">
+      <input type="hidden" name="amount" id="paypalAmount" value="">
+      <button type="submit" id="btnPayer" disabled>Payer avec PayPal</button>
+    </form>
+  </div>
+
+  <script>
+    // Produits avec stock et id
+    const produits = [
+      { id: 1, nom: "T-shirt", prix: 20, stock: 3 },
+      { id: 2, nom: "Casquette", prix: 15, stock: 2 },
+      { id: 3, nom: "Sac", prix: 30, stock: 1 }
+    ];
+
+    // Panier sous forme tableau d'objets {nom, prix, quantite}
+    let panier = [];
+
+    function afficherProduits() {
+      const container = document.getElementById("produits");
+      container.innerHTML = "";
+
+      produits.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "produit";
+        div.innerHTML = `
+          <div>
+            <strong>${p.nom}</strong> - ${p.prix} € (Stock : <span id="stock-${p.id}">${p.stock}</span>)
+          </div>
+          <div>
+            <input type="number" min="1" max="${p.stock}" value="1" class="quantite-input" id="qty-${p.id}" ${p.stock === 0 ? 'disabled' : ''}>
+            <button onclick="ajouterAuPanier(${p.id})" ${p.stock === 0 ? "disabled" : ""}>Ajouter</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function ajouterAuPanier(id) {
+      const produit = produits.find(p => p.id === id);
+      if (!produit || produit.stock === 0) return;
+
+      const inputQty = document.getElementById(`qty-${id}`);
+      let quantite = parseInt(inputQty.value);
+      if (isNaN(quantite) || quantite < 1) quantite = 1;
+      if (quantite > produit.stock) {
+        alert(`Il ne reste que ${produit.stock} ${produit.nom}(s) en stock.`);
+        quantite = produit.stock;
+      }
+
+      // Vérifier si produit est déjà dans le panier
+      const itemPanier = panier.find(item => item.nom === produit.nom);
+      if (itemPanier) {
+        // Vérifier que la nouvelle quantité ne dépasse pas le stock
+        if (itemPanier.quantite + quantite > produit.stock + itemPanier.quantite) {
+          alert(`Stock insuffisant pour ajouter cette quantité.`);
+          return;
+        }
+        itemPanier.quantite += quantite;
+      } else {
+        panier.push({ nom: produit.nom, prix: produit.prix, quantite: quantite });
+      }
+
+      // Met à jour le stock produit
+      produit.stock -= quantite;
+
+      // Met à jour l'affichage
+      afficherProduits();
+      afficherPanier();
+    }
+
+    function afficherPanier() {
+      const liste = document.getElementById("panier");
+      const totalEl = document.getElementById("total");
+      const itemNameEl = document.getElementById("paypalItemName");
+      const amountEl = document.getElementById("paypalAmount");
+      const btnVider = document.getElementById("btnVider");
+      const btnPayer = document.getElementById("btnPayer");
+
+      liste.innerHTML = "";
+      let total = 0;
+      let noms = [];
+
+      if (panier.length === 0) {
+        liste.innerHTML = "<li>Le panier est vide.</li>";
+        btnVider.disabled = true;
+        btnPayer.disabled = true;
+        totalEl.innerText = "0.00";
+        itemNameEl.value = "";
+        amountEl.value = "";
+        return;
+      }
+
+      panier.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "panier-item";
+        li.innerHTML = `
+          <span>${item.nom} - ${item.prix} € x ${item.quantite} = ${(item.prix * item.quantite).toFixed(2)} €</span>
+          <button onclick="retirerDuPanier('${item.nom}')">x</button>
+        `;
+        liste.appendChild(li);
+        total += item.prix * item.quantite;
+        for(let i=0; i<item.quantite; i++) {
+          noms.push(item.nom);
+        }
+      });
+
+      totalEl.innerText = total.toFixed(2);
+      itemNameEl.value = noms.join(", ");
+      amountEl.value = total.toFixed(2);
+      btnVider.disabled = false;
+      btnPayer.disabled = false;
+    }
+
+    function retirerDuPanier(nom) {
+      const index = panier.findIndex(item => item.nom === nom);
+      if (index === -1) return;
+
+      const item = panier[index];
+      // Remettre le stock
+      const produit = produits.find(p => p.nom === nom);
+      if (produit) produit.stock += item.quantite;
+
+      panier.splice(index, 1);
+      afficherProduits();
+      afficherPanier();
+    }
+
+    function viderPanier() {
+      // Remet le stock à l'état initial
+      panier.forEach(item => {
+        const produit = produits.find(p => p.nom === item.nom);
+        if (produit) produit.stock += item.quantite;
+      });
+      panier = [];
+      afficherProduits();
+      afficherPanier();
+    }
+
+    function verifierStockAvantPaiement() {
+      const erreurs = [];
+      const quantites = {};
+
+      panier.forEach(item => {
+        quantites[item.nom] = (quantites[item.nom] || 0) + item.quantite;
+      });
+
+      for (let nom in quantites) {
+        const produit = produits.find(p => p.nom === nom);
+        if (!produit || produit.stock < 0) {
+          erreurs.push(`${nom} est en rupture de stock.`);
+        }
+      }
+
+      if (erreurs.length > 0) {
+        alert("Paiement bloqué :\n" + erreurs.join("\n"));
+        return false;
+      }
+
+      return true;
+    }
+
+    afficherProduits();
+    afficherPanier();
+  </script>
+</body>
+</html>
