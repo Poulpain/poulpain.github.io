@@ -489,6 +489,82 @@
     chargerStock();
     majAffichagePanier();
   </script>
+<!-- Section Commentaires -->
+<section aria-label="Commentaires" style="margin-top: 60px; max-width: 430px; width: 100%; background: #1a1a1a; padding: 25px 30px; border-radius: 18px; box-shadow: 0 0 30px #ffd70055;">
+  <h3 style="color: #ffd700; font-size: 1.6rem; text-align: center; margin-bottom: 20px;">Laissez un avis ⭐</h3>
+  
+  <form id="commentForm" style="display: flex; flex-direction: column; gap: 15px;">
+    <label for="pseudo">Votre prénom :</label>
+    <input type="text" id="pseudo" name="pseudo" required style="padding: 10px; border-radius: 8px; border: none; font-size: 1rem;">
+
+    <label for="note">Votre note :</label>
+    <div id="note" style="display: flex; gap: 8px; font-size: 1.5rem; cursor: pointer;">
+      <span class="etoile" data-note="1">☆</span>
+      <span class="etoile" data-note="2">☆</span>
+      <span class="etoile" data-note="3">☆</span>
+      <span class="etoile" data-note="4">☆</span>
+      <span class="etoile" data-note="5">☆</span>
+    </div>
+
+    <label for="commentaire">Votre commentaire :</label>
+    <textarea id="commentaire" name="commentaire" rows="4" required style="padding: 10px; border-radius: 8px; border: none; font-size: 1rem;"></textarea>
+
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <div id="listeCommentaires" style="margin-top: 30px;">
+    <h4 style="color: #ffd700;">Avis récents :</h4>
+    <ul id="commentaires" style="list-style: none; padding-left: 0; margin-top: 10px;"></ul>
+  </div>
+</section>
+
+  <script>
+  let noteActuelle = 0;
+
+  const etoiles = document.querySelectorAll('.etoile');
+  const commentaires = document.getElementById('commentaires');
+
+  etoiles.forEach((etoile, index) => {
+    etoile.addEventListener('mouseover', () => {
+      colorierEtoiles(index + 1);
+    });
+    etoile.addEventListener('mouseout', () => {
+      colorierEtoiles(noteActuelle);
+    });
+    etoile.addEventListener('click', () => {
+      noteActuelle = index + 1;
+      colorierEtoiles(noteActuelle);
+    });
+  });
+
+  function colorierEtoiles(note) {
+    etoiles.forEach((e, i) => {
+      e.textContent = i < note ? '★' : '☆';
+      e.style.color = i < note ? '#ffd700' : '#999';
+    });
+  }
+
+  document.getElementById('commentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const pseudo = document.getElementById('pseudo').value.trim();
+    const commentaire = document.getElementById('commentaire').value.trim();
+
+    if (noteActuelle === 0 || pseudo === "" || commentaire === "") {
+      alert("Merci de remplir tous les champs et de noter avec au moins 1 étoile.");
+      return;
+    }
+
+    const li = document.createElement('li');
+    li.innerHTML = `<strong style="color:#ffd700">${pseudo}</strong> (${'★'.repeat(noteActuelle)}${'☆'.repeat(5 - noteActuelle)})<br><span style="color:#ddd">${commentaire}</span><hr style="margin:10px 0; border-color: #444;">`;
+    commentaires.prepend(li);
+
+    // Réinitialisation
+    document.getElementById('commentForm').reset();
+    noteActuelle = 0;
+    colorierEtoiles(0);
+  });
+</script>
 
 </body>
 </html>
