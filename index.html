@@ -223,6 +223,32 @@
     #paypal-button-container {
       margin-top: 20px;
     }
+
+#notation .etoile {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s;
+  user-select: none;
+}
+#notation .etoile.active {
+  color: #ffd700;
+}
+
+#listeAvis {
+  margin-top: 20px;
+}
+.avis {
+  border-bottom: 1px solid #444;
+  padding: 10px 0;
+}
+.avis .etoiles {
+  color: #ffd700;
+}
+.avis strong {
+  color: #fff;
+}
+
   </style>
 
   <!-- PayPal SDK -->
@@ -249,6 +275,9 @@
   <article class="produit" aria-label="Produit Mega Booster Pack Magic">
     <h2 class="titre-produit">Mega Booster Pack Magic - 50 cartes</h2>
     <img src="mega-booster.jpg" alt="Mega Booster Pack Magic" loading="lazy" />
+
+
+
 
     <p class="prix" aria-label="Prix du produit 7 euros">7,50 €</p>
 
@@ -302,6 +331,32 @@
     <button id="viderPanierBtn" aria-label="Vider le panier">Vider le panier</button>
     <div id="paypal-button-container"></div>
   </section>
+
+<section id="commentaires" style="margin-top: 60px; max-width: 600px; width: 100%;">
+  <h3 style="color: #ffd700; text-align: center;">Avis des clients ⭐</h3>
+
+  <form id="formAvis" style="margin-bottom: 30px;">
+    <label for="nom">Votre nom :</label><br />
+    <input type="text" id="nom" required style="width: 100%; padding: 8px; border-radius: 8px;"><br /><br />
+
+    <label for="message">Votre avis :</label><br />
+    <textarea id="message" rows="4" required style="width: 100%; padding: 8px; border-radius: 8px;"></textarea><br /><br />
+
+    <label>Note :</label>
+    <div id="notation">
+      <!-- Étoiles cliquables -->
+      <span class="etoile" data-note="1">★</span>
+      <span class="etoile" data-note="2">★</span>
+      <span class="etoile" data-note="3">★</span>
+      <span class="etoile" data-note="4">★</span>
+      <span class="etoile" data-note="5">★</span>
+    </div><br />
+
+    <button type="submit">Envoyer l'avis</button>
+  </form>
+
+  <div id="listeAvis"></div>
+</section>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
@@ -488,83 +543,80 @@
     // Initialisation
     chargerStock();
     majAffichagePanier();
-  </script>
-<!-- Section Commentaires -->
-<section aria-label="Commentaires" style="margin-top: 60px; max-width: 430px; width: 100%; background: #1a1a1a; padding: 25px 30px; border-radius: 18px; box-shadow: 0 0 30px #ffd70055;">
-  <h3 style="color: #ffd700; font-size: 1.6rem; text-align: center; margin-bottom: 20px;">Laissez un avis ⭐</h3>
-  
-  <form id="commentForm" style="display: flex; flex-direction: column; gap: 15px;">
-    <label for="pseudo">Votre prénom :</label>
-    <input type="text" id="pseudo" name="pseudo" required style="padding: 10px; border-radius: 8px; border: none; font-size: 1rem;">
 
-    <label for="note">Votre note :</label>
-    <div id="note" style="display: flex; gap: 8px; font-size: 1.5rem; cursor: pointer;">
-      <span class="etoile" data-note="1">☆</span>
-      <span class="etoile" data-note="2">☆</span>
-      <span class="etoile" data-note="3">☆</span>
-      <span class="etoile" data-note="4">☆</span>
-      <span class="etoile" data-note="5">☆</span>
-    </div>
 
-    <label for="commentaire">Votre commentaire :</label>
-    <textarea id="commentaire" name="commentaire" rows="4" required style="padding: 10px; border-radius: 8px; border: none; font-size: 1rem;"></textarea>
+import {
+  collection, addDoc, query, orderBy, getDocs
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-    <button type="submit">Envoyer</button>
-  </form>
+// Composants DOM
+const formAvis = document.getElementById('formAvis');
+const listeAvis = document.getElementById('listeAvis');
+const etoiles = document.querySelectorAll('#notation .etoile');
 
-  <div id="listeCommentaires" style="margin-top: 30px;">
-    <h4 style="color: #ffd700;">Avis récents :</h4>
-    <ul id="commentaires" style="list-style: none; padding-left: 0; margin-top: 10px;"></ul>
-  </div>
-</section>
+let noteActuelle = 0;
 
-  <script>
-  let noteActuelle = 0;
-
-  const etoiles = document.querySelectorAll('.etoile');
-  const commentaires = document.getElementById('commentaires');
-
-  etoiles.forEach((etoile, index) => {
-    etoile.addEventListener('mouseover', () => {
-      colorierEtoiles(index + 1);
-    });
-    etoile.addEventListener('mouseout', () => {
-      colorierEtoiles(noteActuelle);
-    });
-    etoile.addEventListener('click', () => {
-      noteActuelle = index + 1;
-      colorierEtoiles(noteActuelle);
-    });
+// Gérer clics sur étoiles
+etoiles.forEach(etoile => {
+  etoile.addEventListener('click', () => {
+    noteActuelle = parseInt(etoile.dataset.note);
+    etoiles.forEach(e => e.classList.remove('active'));
+    for (let i = 0; i < noteActuelle; i++) {
+      etoiles[i].classList.add('active');
+    }
   });
+});
 
-  function colorierEtoiles(note) {
-    etoiles.forEach((e, i) => {
-      e.textContent = i < note ? '★' : '☆';
-      e.style.color = i < note ? '#ffd700' : '#999';
-    });
+// Soumission du formulaire
+formAvis.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nom = document.getElementById('nom').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  if (!nom || !message || noteActuelle === 0) {
+    alert("Merci de remplir tous les champs et de noter.");
+    return;
   }
 
-  document.getElementById('commentForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const pseudo = document.getElementById('pseudo').value.trim();
-    const commentaire = document.getElementById('commentaire').value.trim();
-
-    if (noteActuelle === 0 || pseudo === "" || commentaire === "") {
-      alert("Merci de remplir tous les champs et de noter avec au moins 1 étoile.");
-      return;
-    }
-
-    const li = document.createElement('li');
-    li.innerHTML = `<strong style="color:#ffd700">${pseudo}</strong> (${'★'.repeat(noteActuelle)}${'☆'.repeat(5 - noteActuelle)})<br><span style="color:#ddd">${commentaire}</span><hr style="margin:10px 0; border-color: #444;">`;
-    commentaires.prepend(li);
-
-    // Réinitialisation
-    document.getElementById('commentForm').reset();
+  try {
+    await addDoc(collection(db, 'avis'), {
+      nom,
+      message,
+      note: noteActuelle,
+      date: new Date()
+    });
+    formAvis.reset();
     noteActuelle = 0;
-    colorierEtoiles(0);
+    etoiles.forEach(e => e.classList.remove('active'));
+    chargerAvis();
+  } catch (e) {
+    alert("Erreur lors de l'envoi de l'avis : " + e);
+  }
+});
+
+// Affichage des avis
+async function chargerAvis() {
+  listeAvis.innerHTML = "<p>Chargement des avis...</p>";
+  const q = query(collection(db, "avis"), orderBy("date", "desc"));
+  const querySnapshot = await getDocs(q);
+  let html = '';
+  querySnapshot.forEach(doc => {
+    const avis = doc.data();
+    const etoilesHtml = '★'.repeat(avis.note) + '☆'.repeat(5 - avis.note);
+    html += `
+      <div class="avis">
+        <strong>${avis.nom}</strong> <span class="etoiles">${etoilesHtml}</span><br/>
+        <p>${avis.message}</p>
+      </div>
+    `;
   });
-</script>
+  listeAvis.innerHTML = html || "<p>Aucun avis pour le moment.</p>";
+}
+
+// Charger les avis au démarrage
+chargerAvis();
+
+  </script>
 
 </body>
 </html>
