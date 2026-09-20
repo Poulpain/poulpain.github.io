@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scalpers et pigeons : l'ETB Pokémon 30 ans sur Vinted</title>
+<meta name="description" content="Combien de scalpers, combien de pigeons, à quel prix : l'ETB Pokémon 30e anniversaire sur Vinted, mis à jour automatiquement.">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,.10);
+  --s1: #2a78d6; --s2: #eb6834; --tint: rgba(42,120,214,.10); --warn: #b45309;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,.10);
+    --s1: #3987e5; --s2: #d95926; --tint: rgba(57,135,229,.14); --warn: #fab219;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,.10);
+  --s1: #3987e5; --s2: #d95926; --tint: rgba(57,135,229,.14); --warn: #fab219;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+header h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.15; margin: 0 0 6px; font-weight: 650; }
+header p { margin: 0; color: var(--ink2); }
+.maj { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--ink2); }
+.maj i { width: 8px; height: 8px; border-radius: 50%; background: var(--s1); }
+.maj.alerte i { background: var(--warn); }
+.kpis { display: grid; gap: 12px; margin: 22px 0 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.tile, .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.tile { padding: 14px 16px; }
+.tile.hero { grid-column: span 2; }
+@media (max-width: 480px) { .tile.hero { grid-column: 1 / -1; } .tile .v { font-size: 24px; } }
+.tile .l { font-size: 13px; color: var(--ink2); }
+.tile .v { font-size: 28px; font-weight: 650; line-height: 1.2; margin-top: 2px; }
+.tile.hero .v { font-size: clamp(34px, 8vw, 48px); line-height: 1.1; }
+.tile .s { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.conseil { margin: 0 0 14px; padding: 12px 16px; border: 1px solid var(--border); border-left: 4px solid var(--s2);
+  border-radius: 12px; background: var(--surface); color: var(--ink2); }
+.conseil strong { color: var(--ink); }
+.grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } .grid .large { grid-column: span 2; } }
+.card { padding: 16px 16px 12px; min-width: 0; }
+.card h2 { font-size: 16.5px; margin: 0; font-weight: 620; }
+.card .sub { color: var(--ink2); font-size: 13px; margin: 2px 0 8px; }
+.keys { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--ink2); margin: 0 0 4px; }
+.keys i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.chart { position: relative; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: inherit; fill: var(--muted); font-size: 11px; }
+svg text.ink { fill: var(--ink); font-size: 12px; }
+svg text.ink2 { fill: var(--ink2); }
+.vide { color: var(--muted); padding: 28px 0; text-align: center; margin: 0; }
+details { margin-top: 6px; font-size: 13px; }
+summary { color: var(--ink2); cursor: pointer; }
+table { border-collapse: collapse; width: 100%; margin-top: 6px; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 3px 6px; border-bottom: 1px solid var(--grid); }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink2); font-weight: 560; }
+.methode { margin-top: 14px; padding: 16px 18px; }
+.methode h2 { font-size: 16.5px; margin: 0 0 8px; }
+.methode ul { margin: 0; padding-left: 20px; color: var(--ink2); }
+.methode li { margin: 4px 0; }
+.methode strong { color: var(--ink); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 2px; }
+.chips span { border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; font-size: 12.5px; color: var(--ink2); }
+footer { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
+#tip { position: absolute; z-index: 10; pointer-events: none; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 9px; font-size: 12.5px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.14); white-space: nowrap; }
+#tip b { font-weight: 620; }
+#tip[hidden] { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Scalpers 🤑 et pigeons 🐦 : l'ETB Pokémon 30 ans sur Vinted</h1>
+    <p>Chaque annonce ci-dessous est un scalper. Chaque vente est un pigeon. Les chiffres se mettent à jour tout seuls.</p>
+    <div class="maj" id="maj"><i></i><span></span></div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Chiffres clés"></section>
+  <p class="conseil">💡 <strong>Ne soyez pas le pigeon.</strong> Attendez un réassort, cherchez en boutique officielle : tant qu'il y aura des pigeons, il y aura des scalpers.</p>
+
+  <section class="grid">
+    <article class="card large">
+      <h2>Le prix que les scalpers osent demander</h2>
+      <p class="sub">Prix médian demandé à chaque passage. Bande = quartiles (25 % – 75 %). Un point creux = couverture non prouvée.</p>
+      <div class="chart" id="c-prix"></div>
+      <details><summary>Voir les données</summary><div id="t-prix"></div></details>
+    </article>
+
+    <article class="card">
+      <h2>Scalpers en ligne 🤑</h2>
+      <p class="sub">Nombre d'annonces retenues à chaque passage.</p>
+      <div class="chart" id="c-n"></div>
+      <details><summary>Voir les données</summary><div id="t-n"></div></details>
+    </article>
+
+    <article class="card">
+      <h2>Pigeons par jour 🐦</h2>
+      <p class="sub" id="s-ventes"></p>
+      <div class="chart" id="c-ventes"></div>
+      <details><summary>Voir les données</summary><div id="t-ventes"></div></details>
+    </article>
+
+    <article class="card large">
+      <h2 id="h-hist">Répartition des prix</h2>
+      <p class="sub">Dernier prix affiché, par tranche de 10 €.</p>
+      <div class="keys"><span><i style="background:var(--s1)"></i>Scalpers 🤑 (annonces en ligne)</span><span><i style="background:var(--s2);border-radius:50%"></i>Pigeons 🐦 (ventes détectées)</span></div>
+      <div class="chart" id="c-hist"></div>
+      <details><summary>Voir les données</summary><div id="t-hist"></div></details>
+    </article>
+  </section>
+
+  <section class="card methode" id="methode"></section>
+  <footer>Site non affilié à Vinted ni à The Pokémon Company. Site satirique au ton volontairement provocateur : « scalpers » et « pigeons » désignent des catégories statistiques, jamais des personnes. Statistiques agrégées : aucun vendeur, acheteur ni aucune annonce n'est identifié.</footer>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+const D = {"maj_local": "20/09/2026 à 11:38", "fuseau": "heure de Paris", "bande": [100, 300], "prix_officiel": {"lo": 55.0, "hi": 70.0}, "kpi": {"en_ligne": 1123, "mediane": 200.0, "q1": 190.0, "q3": 225.0, "vendues": 12, "vendues_7j": 12, "delai_h": 1.1166666666666667, "delai_n": 12, "vente_med": 180.0, "baisses": 8, "hausses": 0, "baisse_med": 7.125603864734299, "multiple_lo": 2.857142857142857, "multiple_hi": 3.6363636363636362}, "passages": [{"ts": "2026-09-20 08:31", "n": 1085, "med": 200.0, "q1": 190.0, "q3": 224.99, "complet": 0}, {"ts": "2026-09-20 09:38", "n": 1121, "med": 200.0, "q1": 190.0, "q3": 225.0, "complet": 1}], "hist": {"step": 10, "bins": [100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290], "counts": [5, 4, 2, 2, 1, 7, 14, 29, 106, 191, 293, 88, 113, 45, 21, 103, 13, 14, 12, 60], "total": 1123, "mediane": 200.0}, "ventes_prix": [165.0, 175.0, 175.0, 175.0, 180.0, 180.0, 180.0, 180.0, 185.0, 185.0, 185.0, 200.0], "ventes_jour": [{"jour": "2026-09-20", "n": 12}], "ecartees": {"hors_bande": 449, "lots": 123, "etranger": 340}, "couverture": {"ts": "2026-09-20 09:38", "complet": 1, "pages": 283, "tranches": 85, "fuites": 40}};
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const nf = new Intl.NumberFormat("fr-FR");
+const fmtN = n => n == null ? "–" : nf.format(n);
+const eur = n => n == null ? "–" : nf.format(Math.round(n)) + " €";
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag);
+  for (const k in (attrs || {})) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const tip = $("#tip");
+function showTip(html, ev) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  const x = Math.max(8, Math.min(ev.pageX + 14, scrollX + innerWidth - r.width - 8));
+  tip.style.left = x + "px"; tip.style.top = Math.max(8, ev.pageY - r.height - 12) + "px";
+}
+const hideTip = () => { tip.hidden = true; };
+const dt = ms => new Date(ms);
+const fmtT = (ms, court) => new Intl.DateTimeFormat("fr-FR", Object.assign({ timeZone: "Europe/Paris" }, court
+  ? { day: "2-digit", month: "2-digit" }
+  : { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })).format(dt(ms));
+const tsMs = s => Date.parse(s.replace(" ", "T") + ":00Z");
+
+function niceTicks(lo, hi, n) {
+  const raw = (hi - lo) / n, mag = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / mag;
+  const step = (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * mag, out = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(Math.round(v * 1e6) / 1e6);
+  return out;
+}
+function frame(host, W, H, aria) {
+  host.innerHTML = "";
+  return el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": aria }, host);
+}
+function empty(host, msg) { host.innerHTML = `<p class="vide">${msg || "Pas encore de données : le graphique se remplira au fil des passages."}</p>`; }
+function table(host, head, rows) {
+  host.innerHTML = "<table><thead><tr>" + head.map(h => `<th>${h}</th>`).join("") + "</tr></thead><tbody>" +
+    rows.map(r => "<tr>" + r.map(c => `<td>${c}</td>`).join("") + "</tr>").join("") + "</tbody></table>";
+}
+
+// ---------- courbe : pts = [{t, y, lo?, hi?, creux?, lab}] ----------
+function lineChart(host, pts, o) {
+  if (!pts.length) return empty(host);
+  const W = Math.max(300, host.clientWidth), H = 250, m = { l: 46, r: 30, t: 14, b: 30 };
+  const svg = frame(host, W, H, o.aria);
+  const t0 = Math.min(...pts.map(p => p.t)), t1 = Math.max(...pts.map(p => p.t));
+  let lo = Math.min(...pts.map(p => p.lo ?? p.y)), hi = Math.max(...pts.map(p => p.hi ?? p.y));
+  if (o.zero) lo = 0;
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.14; hi += pad; if (!o.zero) lo -= pad;
+  const X = t => t0 === t1 ? (m.l + W - m.r) / 2 : m.l + (t - t0) / (t1 - t0) * (W - m.l - m.r);
+  const Y = v => H - m.b - (v - lo) / (hi - lo) * (H - m.t - m.b);
+  for (const v of niceTicks(lo, hi, 4)) {
+    el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: css("--grid"), "stroke-width": 1 }, svg);
+    el("text", { x: m.l - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = o.fmt(v);
+  }
+  el("line", { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, stroke: css("--axis"), "stroke-width": 1 }, svg);
+  const span = t1 - t0, cand = [...new Set(pts.length <= 4 ? pts.map((_, i) => i)
+    : [0, Math.round(pts.length / 3), Math.round(2 * pts.length / 3), pts.length - 1])], shown = [];
+  let prevX = -1e9;
+  cand.forEach(i => { if (X(pts[i].t) - prevX >= 88) { shown.push(i); prevX = X(pts[i].t); } });
+  const lastI = pts.length - 1;
+  if (!shown.includes(lastI)) { if (shown.length > 1 && X(pts[lastI].t) - prevX < 88) shown[shown.length - 1] = lastI; else shown.push(lastI); }
+  shown.forEach(i => el("text", { x: X(pts[i].t), y: H - 10, "text-anchor": pts.length < 2 ? "middle" : (i === 0 ? "start" : (i === lastI ? "end" : "middle")) }, svg).textContent = fmtT(pts[i].t, span > 3 * 864e5));
+  if (pts.some(p => p.lo != null)) {
+    const up = pts.map(p => `${X(p.t)},${Y(p.hi ?? p.y)}`), dn = pts.slice().reverse().map(p => `${X(p.t)},${Y(p.lo ?? p.y)}`);
+    if (pts.length > 1) el("polygon", { points: up.concat(dn).join(" "), fill: css("--s1"), "fill-opacity": .12 }, svg);
+    else el("line", { x1: X(pts[0].t), x2: X(pts[0].t), y1: Y(pts[0].hi), y2: Y(pts[0].lo), stroke: css("--s1"), "stroke-opacity": .35, "stroke-width": 8, "stroke-linecap": "round" }, svg);
+  }
+  if (pts.length > 1) el("polyline", { points: pts.map(p => `${X(p.t)},${Y(p.y)}`).join(" "), fill: "none", stroke: css("--s1"), "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+  const cross = el("line", { y1: m.t, y2: H - m.b, stroke: css("--axis"), "stroke-width": 1, visibility: "hidden" }, svg);
+  pts.forEach(p => el("circle", { cx: X(p.t), cy: Y(p.y), r: 4.5, fill: p.creux ? css("--surface") : css("--s1"), stroke: p.creux ? css("--s1") : css("--surface"), "stroke-width": 2 }, svg));
+  const last = pts[pts.length - 1];
+  el("text", { x: X(last.t), y: Y(last.y) - 11, "text-anchor": pts.length > 1 ? "end" : "middle", class: "ink" }, svg).textContent = o.fmt(last.y);
+  const hit = el("rect", { x: m.l, y: 0, width: W - m.l - m.r, height: H - m.b, fill: "transparent" }, svg);
+  hit.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * W;
+    const p = pts.reduce((a, b) => Math.abs(X(b.t) - px) < Math.abs(X(a.t) - px) ? b : a);
+    cross.setAttribute("x1", X(p.t)); cross.setAttribute("x2", X(p.t)); cross.setAttribute("visibility", "visible");
+    showTip(`<b>${fmtT(p.t)}</b><br>${o.name} : ${o.fmt(p.y)}` + (p.lo != null ? `<br>Q1–Q3 : ${o.fmt(p.lo)} – ${o.fmt(p.hi)}` : "") + (p.creux ? "<br>couverture non prouvée" : ""), ev);
+  });
+  hit.addEventListener("pointerleave", () => { hideTip(); cross.setAttribute("visibility", "hidden"); });
+}
+
+// ---------- colonnes : items = [{lab, v}] ----------
+function barChart(host, items, o) {
+  if (!items.length) return empty(host, o.vide);
+  const W = Math.max(300, host.clientWidth), H = 230, m = { l: 36, r: 12, t: 22, b: 30 };
+  const svg = frame(host, W, H, o.aria);
+  const max = Math.max(...items.map(i => i.v), 1), hi = niceTicks(0, max * 1.15, 4).slice(-1)[0];
+  const Y = v => H - m.b - v / hi * (H - m.t - m.b), band = (W - m.l - m.r) / items.length, bw = Math.min(24, band * 0.6);
+  for (const v of niceTicks(0, hi, 4)) {
+    el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: css("--grid") }, svg);
+    el("text", { x: m.l - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = fmtN(v);
+  }
+  el("line", { x1: m.l, x2: W - m.r, y1: Y(0), y2: Y(0), stroke: css("--axis") }, svg);
+  items.forEach((it, i) => {
+    const cx = m.l + band * (i + .5), h = Math.max(it.v ? 2 : 0, Y(0) - Y(it.v));
+    const r = el("rect", { x: cx - bw / 2, y: Y(0) - h, width: bw, height: h, rx: 4, fill: css("--s1") }, svg);
+    if (h > 4) el("rect", { x: cx - bw / 2, y: Y(0) - 4, width: bw, height: 4, fill: css("--s1") }, svg); // pied carre
+    if (items.length <= 16 && it.v) el("text", { x: cx, y: Y(it.v) - 6, "text-anchor": "middle", class: "ink" }, svg).textContent = fmtN(it.v);
+    if (items.length <= 10 || i % Math.ceil(items.length / 8) === 0) el("text", { x: cx, y: H - 10, "text-anchor": "middle" }, svg).textContent = it.lab;
+    const z = el("rect", { x: cx - band / 2, y: m.t, width: band, height: H - m.t - m.b, fill: "transparent" }, svg);
+    z.addEventListener("pointermove", ev => showTip(`<b>${it.lab}</b><br>${it.v} vente${it.v > 1 ? "s" : ""}`, ev));
+    z.addEventListener("pointerleave", hideTip);
+  });
+}
+
+// ---------- histogramme + bande des ventes ----------
+function histChart(host) {
+  const h = D.hist;
+  if (!h.total) return empty(host);
+  const W = Math.max(300, host.clientWidth), H = 300, m = { l: 40, r: 14, t: 22, b: 28 }, stripH = 46, plotB = H - m.b - stripH;
+  const svg = frame(host, W, H, "Histogramme des prix demandés, avec les ventes détectées en dessous");
+  const step = h.step, x0 = h.bins[0], x1 = h.bins[h.bins.length - 1] + step;
+  const X = v => m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r), max = Math.max(...h.counts, 1);
+  const top = niceTicks(0, max * 1.22, 4).slice(-1)[0], Y = v => plotB - v / top * (plotB - m.t);
+  for (const v of niceTicks(0, top, 4)) {
+    el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: css("--grid") }, svg);
+    el("text", { x: m.l - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = fmtN(v);
+  }
+  h.bins.forEach((b, i) => {
+    const c = h.counts[i], x = X(b) + 1, w = X(b + step) - X(b) - 2, ht = Y(0) - Y(c);
+    if (c) el("rect", { x, y: Y(c), width: w, height: ht, rx: Math.min(4, w / 2), fill: css("--s1") }, svg);
+    if (c) el("rect", { x, y: Y(0) - Math.min(4, ht), width: w, height: Math.min(4, ht), fill: css("--s1") }, svg);
+    const z = el("rect", { x: X(b), y: m.t, width: X(b + step) - X(b), height: plotB - m.t, fill: "transparent" }, svg);
+    z.addEventListener("pointermove", ev => showTip(`<b>${b}–${b + step} €</b><br>${fmtN(c)} annonce${c > 1 ? "s" : ""} en ligne`, ev));
+    z.addEventListener("pointerleave", hideTip);
+  });
+  el("line", { x1: m.l, x2: W - m.r, y1: Y(0), y2: Y(0), stroke: css("--axis") }, svg);
+  for (let v = x0; v <= x1; v += 50) el("text", { x: X(v), y: H - 8, "text-anchor": "middle" }, svg).textContent = v + " €";
+  const mx = X(h.mediane);
+  el("line", { x1: mx, x2: mx, y1: 4, y2: H - m.b, stroke: css("--ink"), "stroke-width": 1.2 }, svg);
+  el("text", { x: mx + 6, y: 13, class: "ink" }, svg).textContent = "médiane " + eur(h.mediane);
+  const sy = plotB + stripH / 2 + 4;
+  el("text", { x: m.l, y: plotB + 12 }, svg).textContent = "Pigeons 🐦 (dernier prix affiché)";
+  if (!D.ventes_prix.length) el("text", { x: X((x0 + x1) / 2), y: sy + 4, "text-anchor": "middle" }, svg).textContent = "aucun pigeon détecté pour l'instant";
+  D.ventes_prix.forEach((p, i) => {
+    const c = el("circle", { cx: X(Math.min(Math.max(p, x0), x1)), cy: sy + ((i % 3) - 1) * 6, r: 4.5, fill: css("--s2"), stroke: css("--surface"), "stroke-width": 2 }, svg);
+    c.addEventListener("pointermove", ev => showTip(`<b>Pigeon 🐦</b><br>dernier prix affiché : ${eur(p)}`, ev));
+    c.addEventListener("pointerleave", hideTip);
+  });
+}
+
+// ---------- rendu ----------
+function render() {
+  const K = D.kpi, C = D.couverture;
+  $("#maj span").textContent = D.maj_local ? `Dernière mise à jour : ${D.maj_local} (${D.fuseau})` : "Aucune donnée pour l'instant";
+  if (C && C.complet === 0) $("#maj").classList.add("alerte");
+
+  const dl = K.delai_h == null ? "–" : (K.delai_h < 48 ? Math.round(K.delai_h) + " h" : (K.delai_h / 24).toFixed(1).replace(".", ",") + " j");
+  const tiles = [];
+  const PO = D.prix_officiel, x1 = n => "×" + n.toFixed(1).replace(".", ","), hasPO = PO && K.multiple_lo != null;
+  if (hasPO) {
+    const same = PO.lo === PO.hi, fmtPO = same ? eur(PO.lo) : `entre ${nf.format(PO.lo)} et ${eur(PO.hi)}`;
+    tiles.push({ c: "hero", l: "Le prix officiel, multiplié par",
+      v: same ? x1(K.multiple_lo) : `${x1(K.multiple_lo)} à ${x1(K.multiple_hi)}`,
+      s: `${eur(K.mediane)} demandés pour un ETB dont le prix officiel est estimé ${fmtPO}` });
+  }
+  tiles.push({ c: hasPO ? "" : "hero", l: "Prix médian demandé", v: eur(K.mediane),
+    s: K.q1 != null ? `50 % des annonces entre ${eur(K.q1)} et ${eur(K.q3)}` : "" });
+  tiles.push({ l: "Scalpers en ligne 🤑", v: fmtN(K.en_ligne), s: `annonces dans la bande ${D.bande[0]}–${D.bande[1]} €` });
+  tiles.push({ l: "Pigeons 🐦", v: fmtN(K.vendues), s: `ventes détectées, dont ${fmtN(K.vendues_7j)} sur les 7 derniers jours` });
+  tiles.push({ l: "Un pigeon craque en (médiane)", v: dl, s: K.delai_n >= 5 ? `sur ${K.delai_n} ventes, depuis la 1re observation` : "trop peu de ventes pour l'instant" });
+  tiles.push({ l: "Scalpers qui baissent 📉", v: fmtN(K.baisses), s: `${fmtN(K.hausses)} hausse${K.hausses > 1 ? "s" : ""}` + (K.baisse_med != null ? ` · baisse médiane ${K.baisse_med.toFixed(0)} %` : "") });
+  $("#kpis").innerHTML = tiles.map(t => `<div class="tile ${t.c || ""}"><div class="l">${t.l}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`).join("");
+
+  const P = D.passages.map(p => ({ t: tsMs(p.ts), y: p.med, lo: p.q1, hi: p.q3, n: p.n, creux: p.complet === 0 }));
+  lineChart($("#c-prix"), P.filter(p => p.y != null), { aria: "Prix médian demandé par passage", name: "prix médian", fmt: eur });
+  table($("#t-prix"), ["Passage", "Médiane", "Q1", "Q3", "Annonces"], D.passages.map(p => [fmtT(tsMs(p.ts)), eur(p.med), eur(p.q1), eur(p.q3), fmtN(p.n)]));
+  lineChart($("#c-n"), P.map(p => ({ t: p.t, y: p.n, creux: p.creux })), { aria: "Nombre d'annonces en ligne par passage", name: "annonces", fmt: fmtN, zero: true });
+  table($("#t-n"), ["Passage", "Annonces", "Couverture"], D.passages.map(p => [fmtT(tsMs(p.ts)), fmtN(p.n), p.complet === 0 ? "non prouvée" : (p.complet === 1 ? "prouvée" : "–")]));
+
+  $("#s-ventes").textContent = D.ventes_jour.length ? `${fmtN(K.vendues)} pigeons depuis le début du suivi (${D.fuseau}).` : "Un pigeon = une annonce sortie du catalogue et devenue non achetable.";
+  barChart($("#c-ventes"), D.ventes_jour.map(v => ({ lab: v.jour.slice(8, 10) + "/" + v.jour.slice(5, 7), v: v.n })),
+    { aria: "Ventes détectées par jour", vide: "Aucune vente détectée pour l'instant." });
+  table($("#t-ventes"), ["Jour", "Ventes"], D.ventes_jour.map(v => [v.jour, fmtN(v.n)]));
+
+  if (D.hist.total) $("#h-hist").textContent = D.ventes_prix.length >= 5 && D.kpi.vente_med != null
+    ? `Les pigeons paient autour de ${eur(D.kpi.vente_med)}, les scalpers en demandent ${eur(D.hist.mediane)}` : "Répartition des prix";
+  histChart($("#c-hist"));
+  table($("#t-hist"), ["Tranche", "Annonces en ligne"], D.hist.bins.map((b, i) => [`${b}–${b + D.hist.step} €`, fmtN(D.hist.counts[i])]));
+
+  const E = D.ecartees;
+  $("#methode").innerHTML = `<h2>Méthode et limites</h2>
+  <ul>
+   <li><strong>Périmètre :</strong> annonces Vinted dont le titre contient « ETB » et le nombre 30, hors annonces d'acheteurs (« recherche… »), au prix demandé entre ${D.bande[0]} et ${D.bande[1]} €, hors lots et éditions étrangères.</li>
+   <li><strong>Prix :</strong> dernier prix affiché, hors frais. C'est une borne haute du prix réel : Vinted permet des offres négociées que l'on ne voit pas.</li>
+   <li><strong>Vente détectée :</strong> l'annonce quitte la recherche et sa page n'est plus achetable sans avoir été supprimée ni masquée. Cette règle est déduite de l'observation, pas confirmée par Vinted.</li>
+   <li><strong>Délai :</strong> mesuré depuis la première observation de l'annonce, et le moment de la vente est connu à l'intervalle entre deux passages près.</li>
+   <li><strong>Couverture :</strong> la recherche de Vinted est plafonnée et dépend des mots employés. Chaque passage lit toutes les formulations connues par tranches de prix, à partir de ${D.bande[0]} €, mais on ne peut pas garantir de voir 100 % des annonces.${C ? ` Dernier passage : couverture ${C.complet ? "prouvée" : "<strong>non prouvée</strong>"}, ${fmtN(C.pages)} pages lues, ${fmtN(C.fuites)} annonce${C.fuites > 1 ? "s" : ""} hors balayage détectée${C.fuites > 1 ? "s" : ""}.` : ""}</li>
+  </ul>
+  <div class="chips" aria-label="Annonces écartées des statistiques">
+    <span>${fmtN(E.hors_bande)} hors bande de prix</span><span>${fmtN(E.lots)} lots, accessoires, cartes seules</span><span>${fmtN(E.etranger)} éditions étrangères</span>
+  </div>`;
+}
+render();
+let lastW = document.querySelector(".wrap").clientWidth, rt;
+new ResizeObserver(() => { const w = document.querySelector(".wrap").clientWidth;
+  if (w !== lastW) { lastW = w; clearTimeout(rt); rt = setTimeout(render, 120); } }).observe(document.querySelector(".wrap"));
+</script>
+</body>
+</html>
