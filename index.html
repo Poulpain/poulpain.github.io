@@ -335,7 +335,15 @@ function render() {
   table($("#t-hist"), ["Tranche", "Annonces en ligne", "Ventes détectées"], D.hist.bins.map((b, i) => [`${b}–${b + D.hist.step} €`, fmtN(D.hist.counts[i]), fmtN(sc[i])]));
 
   const E = D.ecartees;
-
+  $("#methode").innerHTML = `<h2>Méthode et limites</h2>
+  <ul>
+   <li><strong>Périmètre :</strong> annonces Vinted dont le titre contient « ETB » et le nombre 30, hors annonces d'acheteurs (« recherche… »), au prix demandé entre ${D.bande[0]} et ${D.bande[1]} €, hors lots et éditions étrangères.</li>
+   <li><strong>Prix :</strong> dernier prix affiché, hors frais. C'est une borne haute du prix réel : Vinted permet des offres négociées que l'on ne voit pas.</li>
+   <li><strong>Vente détectée :</strong> l'annonce quitte la recherche et sa page n'est plus achetable sans avoir été supprimée ni masquée. Cette règle est déduite de l'observation, pas confirmée par Vinted.</li>
+   <li><strong>Couverture :</strong> la recherche de Vinted est plafonnée et dépend des mots employés. Chaque passage lit toutes les formulations connues par tranches de prix, à partir de ${D.bande[0]} €, mais on ne peut pas garantir de voir 100 % des annonces.${C ? ` Dernier passage : couverture ${C.complet ? "prouvée" : "<strong>non prouvée</strong>"}, ${fmtN(C.pages)} pages lues, ${fmtN(C.fuites)} annonce${C.fuites > 1 ? "s" : ""} hors balayage détectée${C.fuites > 1 ? "s" : ""}.` : ""}</li>
+  </ul>
+  <div class="chips" aria-label="Annonces écartées des statistiques">
+    <span>${fmtN(E.hors_bande)} hors bande de prix</span><span>${fmtN(E.lots)} lots, accessoires, cartes seules</span><span>${fmtN(E.etranger)} éditions étrangères</span>
   </div>`;
 }
 render();
