@@ -94,8 +94,9 @@ footer { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
 
   <section class="grid">
     <article class="card large">
-      <h2>Le prix que les scalpers osent demander</h2>
-      <p class="sub">Prix médian demandé à chaque passage. Bande = quartiles (25 % – 75 %). Un point creux = couverture non prouvée.</p>
+      <h2>Ce que les scalpers demandent, ce que les pigeons paient</h2>
+      <p class="sub">Médiane à chaque passage. Bleu : prix demandés (bande = quartiles). Orange : dernier prix affiché des ventes détectées à ce passage. Un point creux = couverture non prouvée.</p>
+      <div class="keys"><span><i style="background:var(--s1)"></i>Scalpers 🤑 (prix demandés)</span><span><i style="background:var(--s2);border-radius:50%"></i>Pigeons 🐦 (prix des ventes)</span></div>
       <div class="chart" id="c-prix"></div>
       <details><summary>Voir les données</summary><div id="t-prix"></div></details>
     </article>
@@ -123,13 +124,11 @@ footer { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
     </article>
   </section>
 
-  <section class="card methode" id="methode"></section>
-  <footer>Site non affilié à Vinted ni à The Pokémon Company. Site satirique au ton volontairement provocateur : « scalpers » et « pigeons » désignent des catégories statistiques, jamais des personnes. Statistiques agrégées : aucun vendeur, acheteur ni aucune annonce n'est identifié.</footer>
 </div>
 <div id="tip" hidden></div>
 
 <script>
-const D = {"maj_local": "20/09/2026 à 15:54", "fuseau": "heure de Paris", "bande": [100, 300], "prix_officiel": {"lo": 55.0, "hi": 70.0}, "kpi": {"en_ligne": 1132, "mediane": 200.0, "q1": 190.0, "q3": 225.0, "vendues": 40, "vendues_7j": 40, "delai_h": 5.383333333333334, "delai_n": 40, "vente_med": 185.0, "baisses": 41, "hausses": 4, "baisse_med": 5.555555555555555, "multiple_lo": 2.857142857142857, "multiple_hi": 3.6363636363636362}, "passages": [{"ts": "2026-09-20 08:31", "n": 1084, "med": 200.0, "q1": 190.0, "q3": 224.9925, "complet": 0}, {"ts": "2026-09-20 09:38", "n": 1120, "med": 200.0, "q1": 190.0, "q3": 225.0, "complet": 1}, {"ts": "2026-09-20 13:54", "n": 1129, "med": 200.0, "q1": 190.0, "q3": 225.0, "complet": 1}], "hist": {"step": 10, "bins": [100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290], "counts": [6, 3, 3, 1, 1, 9, 13, 28, 95, 202, 306, 90, 105, 45, 20, 103, 14, 17, 12, 59], "total": 1132, "mediane": 200.0}, "ventes_prix": [160.0, 165.0, 165.0, 170.0, 174.99, 175.0, 175.0, 175.0, 175.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 182.0, 185.0, 185.0, 185.0, 185.0, 185.0, 185.0, 185.0, 188.0, 190.0, 190.0, 190.0, 190.0, 190.0, 190.0, 195.0, 198.0, 199.0, 200.0, 200.0, 200.0, 210.0], "ventes_jour": [{"jour": "2026-09-20", "n": 40}], "ecartees": {"hors_bande": 468, "lots": 127, "etranger": 356}, "couverture": {"ts": "2026-09-20 13:54", "complet": 1, "pages": 304, "tranches": 84, "fuites": 11}};
+const D = {"maj_local": "20/09/2026 à 15:54", "fuseau": "heure de Paris", "bande": [100, 300], "prix_officiel": {"lo": 55.0, "hi": 70.0}, "kpi": {"en_ligne": 1132, "mediane": 200.0, "q1": 190.0, "q3": 225.0, "vendues": 40, "vendues_7j": 40, "delai_h": 5.383333333333334, "delai_n": 40, "vente_med": 185.0, "baisses": 41, "hausses": 4, "baisse_med": 5.555555555555555, "multiple_lo": 2.857142857142857, "multiple_hi": 3.6363636363636362}, "passages": [{"ts": "2026-09-20 08:31", "n": 1084, "med": 200.0, "q1": 190.0, "q3": 224.9925, "complet": 0, "med_vente": null, "n_ventes": 0}, {"ts": "2026-09-20 09:38", "n": 1120, "med": 200.0, "q1": 190.0, "q3": 225.0, "complet": 1, "med_vente": 180.0, "n_ventes": 12}, {"ts": "2026-09-20 13:54", "n": 1129, "med": 200.0, "q1": 190.0, "q3": 225.0, "complet": 1, "med_vente": 185.0, "n_ventes": 28}], "hist": {"step": 10, "bins": [100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290], "counts": [6, 3, 3, 1, 1, 9, 13, 28, 95, 202, 306, 90, 105, 45, 20, 103, 14, 17, 12, 59], "total": 1132, "mediane": 200.0}, "ventes_prix": [160.0, 165.0, 165.0, 170.0, 174.99, 175.0, 175.0, 175.0, 175.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 180.0, 182.0, 185.0, 185.0, 185.0, 185.0, 185.0, 185.0, 185.0, 188.0, 190.0, 190.0, 190.0, 190.0, 190.0, 190.0, 195.0, 198.0, 199.0, 200.0, 200.0, 200.0, 210.0], "ventes_jour": [{"jour": "2026-09-20", "n": 40}], "ecartees": {"hors_bande": 468, "lots": 127, "etranger": 356}, "couverture": {"ts": "2026-09-20 13:54", "complet": 1, "pages": 304, "tranches": 84, "fuites": 11}};
 const $ = s => document.querySelector(s);
 const NS = "http://www.w3.org/2000/svg";
 const nf = new Intl.NumberFormat("fr-FR");
@@ -168,13 +167,14 @@ function table(host, head, rows) {
     rows.map(r => "<tr>" + r.map(c => `<td>${c}</td>`).join("") + "</tr>").join("") + "</tbody></table>";
 }
 
-// ---------- courbe : pts = [{t, y, lo?, hi?, creux?, lab}] ----------
+// ---------- courbe : pts = [{t, y, lo?, hi?, creux?}] ; o.pts2 = 2e serie orange [{t, y, n}] ----------
 function lineChart(host, pts, o) {
   if (!pts.length) return empty(host);
   const W = Math.max(300, host.clientWidth), H = 250, m = { l: 46, r: 30, t: 14, b: 30 };
   const svg = frame(host, W, H, o.aria);
+  const p2 = o.pts2 || [], all = pts.concat(p2);
   const t0 = Math.min(...pts.map(p => p.t)), t1 = Math.max(...pts.map(p => p.t));
-  let lo = Math.min(...pts.map(p => p.lo ?? p.y)), hi = Math.max(...pts.map(p => p.hi ?? p.y));
+  let lo = Math.min(...all.map(p => p.lo ?? p.y)), hi = Math.max(...all.map(p => p.hi ?? p.y));
   if (o.zero) lo = 0;
   if (hi === lo) { hi += 1; lo -= 1; }
   const pad = (hi - lo) * 0.14; hi += pad; if (!o.zero) lo -= pad;
@@ -197,17 +197,23 @@ function lineChart(host, pts, o) {
     if (pts.length > 1) el("polygon", { points: up.concat(dn).join(" "), fill: css("--s1"), "fill-opacity": .12 }, svg);
     else el("line", { x1: X(pts[0].t), x2: X(pts[0].t), y1: Y(pts[0].hi), y2: Y(pts[0].lo), stroke: css("--s1"), "stroke-opacity": .35, "stroke-width": 8, "stroke-linecap": "round" }, svg);
   }
-  if (pts.length > 1) el("polyline", { points: pts.map(p => `${X(p.t)},${Y(p.y)}`).join(" "), fill: "none", stroke: css("--s1"), "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+  const line = (arr, col) => { if (arr.length > 1) el("polyline", { points: arr.map(p => `${X(p.t)},${Y(p.y)}`).join(" "), fill: "none", stroke: css(col), "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg); };
+  line(pts, "--s1"); line(p2, "--s2");
   const cross = el("line", { y1: m.t, y2: H - m.b, stroke: css("--axis"), "stroke-width": 1, visibility: "hidden" }, svg);
   pts.forEach(p => el("circle", { cx: X(p.t), cy: Y(p.y), r: 4.5, fill: p.creux ? css("--surface") : css("--s1"), stroke: p.creux ? css("--s1") : css("--surface"), "stroke-width": 2 }, svg));
-  const last = pts[pts.length - 1];
-  el("text", { x: X(last.t), y: Y(last.y) - 11, "text-anchor": pts.length > 1 ? "end" : "middle", class: "ink" }, svg).textContent = o.fmt(last.y);
+  p2.forEach(p => el("circle", { cx: X(p.t), cy: Y(p.y), r: 4.5, fill: css("--s2"), stroke: css("--surface"), "stroke-width": 2 }, svg));
+  const last = pts[pts.length - 1], last2 = p2.length ? p2[p2.length - 1] : null;
+  const anchor = pts.length > 1 ? "end" : "middle", above = !last2 || last.y >= last2.y;
+  el("text", { x: X(last.t), y: Y(last.y) + (above ? -11 : 19), "text-anchor": anchor, class: "ink" }, svg).textContent = o.fmt(last.y);
+  if (last2) el("text", { x: X(last2.t), y: Y(last2.y) + (above ? 19 : -11), "text-anchor": anchor, class: "ink" }, svg).textContent = o.fmt(last2.y);
   const hit = el("rect", { x: m.l, y: 0, width: W - m.l - m.r, height: H - m.b, fill: "transparent" }, svg);
   hit.addEventListener("pointermove", ev => {
     const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * W;
     const p = pts.reduce((a, b) => Math.abs(X(b.t) - px) < Math.abs(X(a.t) - px) ? b : a);
+    const q = p2.find(z => z.t === p.t);
     cross.setAttribute("x1", X(p.t)); cross.setAttribute("x2", X(p.t)); cross.setAttribute("visibility", "visible");
-    showTip(`<b>${fmtT(p.t)}</b><br>${o.name} : ${o.fmt(p.y)}` + (p.lo != null ? `<br>Q1–Q3 : ${o.fmt(p.lo)} – ${o.fmt(p.hi)}` : "") + (p.creux ? "<br>couverture non prouvée" : ""), ev);
+    showTip(`<b>${fmtT(p.t)}</b><br>${o.name} : ${o.fmt(p.y)}` + (p.lo != null ? `<br>Q1–Q3 : ${o.fmt(p.lo)} – ${o.fmt(p.hi)}` : "")
+      + (q ? `<br>🐦 ${o.name2} : ${o.fmt(q.y)} (${q.n} vente${q.n > 1 ? "s" : ""})` : "") + (p.creux ? "<br>couverture non prouvée" : ""), ev);
   });
   hit.addEventListener("pointerleave", () => { hideTip(); cross.setAttribute("visibility", "hidden"); });
 }
@@ -318,8 +324,9 @@ function render() {
   $("#kpis").innerHTML = tiles.map(t => `<div class="tile ${t.c || ""}"><div class="l">${t.l}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`).join("");
 
   const P = D.passages.map(p => ({ t: tsMs(p.ts), y: p.med, lo: p.q1, hi: p.q3, n: p.n, creux: p.complet === 0 }));
-  lineChart($("#c-prix"), P.filter(p => p.y != null), { aria: "Prix médian demandé par passage", name: "prix médian", fmt: eur });
-  table($("#t-prix"), ["Passage", "Médiane", "Q1", "Q3", "Annonces"], D.passages.map(p => [fmtT(tsMs(p.ts)), eur(p.med), eur(p.q1), eur(p.q3), fmtN(p.n)]));
+  const P2 = D.passages.filter(p => p.med_vente != null).map(p => ({ t: tsMs(p.ts), y: p.med_vente, n: p.n_ventes }));
+  lineChart($("#c-prix"), P.filter(p => p.y != null), { aria: "Prix médian demandé et prix médian des ventes détectées, par passage", name: "prix demandé", name2: "prix des ventes", fmt: eur, pts2: P2 });
+  table($("#t-prix"), ["Passage", "Médiane demandée", "Q1", "Q3", "Annonces", "Ventes", "Médiane des ventes"], D.passages.map(p => [fmtT(tsMs(p.ts)), eur(p.med), eur(p.q1), eur(p.q3), fmtN(p.n), fmtN(p.n_ventes), eur(p.med_vente)]));
   lineChart($("#c-n"), P.map(p => ({ t: p.t, y: p.n, creux: p.creux })), { aria: "Nombre d'annonces en ligne par passage", name: "annonces", fmt: fmtN, zero: true });
   table($("#t-n"), ["Passage", "Annonces", "Couverture"], D.passages.map(p => [fmtT(tsMs(p.ts)), fmtN(p.n), p.complet === 0 ? "non prouvée" : (p.complet === 1 ? "prouvée" : "–")]));
 
@@ -334,17 +341,6 @@ function render() {
   const sc = binCounts(D.hist, D.ventes_prix);
   table($("#t-hist"), ["Tranche", "Annonces en ligne", "Ventes détectées"], D.hist.bins.map((b, i) => [`${b}–${b + D.hist.step} €`, fmtN(D.hist.counts[i]), fmtN(sc[i])]));
 
-  const E = D.ecartees;
-  $("#methode").innerHTML = `<h2>Méthode et limites</h2>
-  <ul>
-   <li><strong>Périmètre :</strong> annonces Vinted dont le titre contient « ETB » et le nombre 30, hors annonces d'acheteurs (« recherche… »), au prix demandé entre ${D.bande[0]} et ${D.bande[1]} €, hors lots et éditions étrangères.</li>
-   <li><strong>Prix :</strong> dernier prix affiché, hors frais. C'est une borne haute du prix réel : Vinted permet des offres négociées que l'on ne voit pas.</li>
-   <li><strong>Vente détectée :</strong> l'annonce quitte la recherche et sa page n'est plus achetable sans avoir été supprimée ni masquée. Cette règle est déduite de l'observation, pas confirmée par Vinted.</li>
-   <li><strong>Couverture :</strong> la recherche de Vinted est plafonnée et dépend des mots employés. Chaque passage lit toutes les formulations connues par tranches de prix, à partir de ${D.bande[0]} €, mais on ne peut pas garantir de voir 100 % des annonces.${C ? ` Dernier passage : couverture ${C.complet ? "prouvée" : "<strong>non prouvée</strong>"}, ${fmtN(C.pages)} pages lues, ${fmtN(C.fuites)} annonce${C.fuites > 1 ? "s" : ""} hors balayage détectée${C.fuites > 1 ? "s" : ""}.` : ""}</li>
-  </ul>
-  <div class="chips" aria-label="Annonces écartées des statistiques">
-    <span>${fmtN(E.hors_bande)} hors bande de prix</span><span>${fmtN(E.lots)} lots, accessoires, cartes seules</span><span>${fmtN(E.etranger)} éditions étrangères</span>
-  </div>`;
 }
 render();
 let lastW = document.querySelector(".wrap").clientWidth, rt;
