@@ -90,7 +90,7 @@ footer { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
   </header>
 
   <section class="kpis" id="kpis" aria-label="Chiffres clés"></section>
-  <p class="conseil">💡 <strong>Ne soyez pas le pigeon.</strong> Attendez un réassort, cherchez en boutique officielle : tant qu'il y aura des pigeons, il y aura des scalpers.</p>
+  <p class="conseil">💡 <strong>Ne soyez pas le pigeon :</strong> tant qu'il y aura des pigeons, il y aura des scalpers.</p>
 
   <section class="grid">
     <article class="card large">
@@ -116,7 +116,7 @@ footer { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
 
     <article class="card large">
       <h2 id="h-hist">Répartition des prix</h2>
-      <p class="sub">Dernier prix affiché, par tranche de 10 €.</p>
+      <p class="sub">Part du total par tranche de 10 € : en haut les annonces en ligne, en bas les ventes détectées (dernier prix affiché).</p>
       <div class="keys"><span><i style="background:var(--s1)"></i>Scalpers 🤑 (annonces en ligne)</span><span><i style="background:var(--s2);border-radius:50%"></i>Pigeons 🐦 (ventes détectées)</span></div>
       <div class="chart" id="c-hist"></div>
       <details><summary>Voir les données</summary><div id="t-hist"></div></details>
@@ -236,40 +236,65 @@ function barChart(host, items, o) {
   });
 }
 
-// ---------- histogramme + bande des ventes ----------
+// ---------- histogramme miroir : annonces en haut, ventes en bas (part du total, meme echelle) ----------
+function binCounts(h, prices) {
+  const c = new Array(h.bins.length).fill(0);
+  prices.forEach(p => { c[Math.max(0, Math.min(h.bins.length - 1, Math.floor((p - h.bins[0]) / h.step)))]++; });
+  return c;
+}
 function histChart(host) {
   const h = D.hist;
   if (!h.total) return empty(host);
-  const W = Math.max(300, host.clientWidth), H = 300, m = { l: 40, r: 14, t: 22, b: 28 }, stripH = 46, plotB = H - m.b - stripH;
-  const svg = frame(host, W, H, "Histogramme des prix demandés, avec les ventes détectées en dessous");
+  const W = Math.max(300, host.clientWidth), H = 380, m = { l: 48, r: 14, t: 28, b: 46 };
+  const svg = frame(host, W, H, "Histogramme miroir : part des annonces en ligne (en haut) et part des ventes détectées (en bas), par tranche de prix");
   const step = h.step, x0 = h.bins[0], x1 = h.bins[h.bins.length - 1] + step;
-  const X = v => m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r), max = Math.max(...h.counts, 1);
-  const top = niceTicks(0, max * 1.22, 4).slice(-1)[0], Y = v => plotB - v / top * (plotB - m.t);
-  for (const v of niceTicks(0, top, 4)) {
-    el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: css("--grid") }, svg);
-    el("text", { x: m.l - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = fmtN(v);
+  const nS = D.ventes_prix.length, sold = binCounts(h, D.ventes_prix);
+  const pTop = h.counts.map(c => c / h.total * 100), pBot = sold.map(c => nS ? c / nS * 100 : 0);
+  const dom = Math.max(...pTop, ...pBot, 1) * 1.15;
+  const plotH = H - m.t - m.b, y0 = m.t + plotH / 2, half = plotH / 2 - 2, k = half / dom;
+  const X = v => m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r);
+
+  for (const v of niceTicks(0, dom, 3)) {
+    if (v === 0) continue;
+    for (const y of [y0 - v * k, y0 + v * k]) el("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, stroke: css("--grid") }, svg);
+    el("text", { x: m.l - 8, y: y0 - v * k + 4, "text-anchor": "end" }, svg).textContent = v + " %";
+    el("text", { x: m.l - 8, y: y0 + v * k + 4, "text-anchor": "end" }, svg).textContent = v + " %";
+  }
+  for (let v = x0; v <= x1; v += 50) {
+    el("line", { x1: X(v), x2: X(v), y1: m.t, y2: H - m.b, stroke: css("--grid"), "stroke-opacity": .6 }, svg);
+    el("text", { x: X(v), y: H - 8, "text-anchor": "middle" }, svg).textContent = v + " €";
   }
   h.bins.forEach((b, i) => {
-    const c = h.counts[i], x = X(b) + 1, w = X(b + step) - X(b) - 2, ht = Y(0) - Y(c);
-    if (c) el("rect", { x, y: Y(c), width: w, height: ht, rx: Math.min(4, w / 2), fill: css("--s1") }, svg);
-    if (c) el("rect", { x, y: Y(0) - Math.min(4, ht), width: w, height: Math.min(4, ht), fill: css("--s1") }, svg);
-    const z = el("rect", { x: X(b), y: m.t, width: X(b + step) - X(b), height: plotB - m.t, fill: "transparent" }, svg);
-    z.addEventListener("pointermove", ev => showTip(`<b>${b}–${b + step} €</b><br>${fmtN(c)} annonce${c > 1 ? "s" : ""} en ligne`, ev));
-    z.addEventListener("pointerleave", hideTip);
+    const x = X(b) + 1, w = X(b + step) - X(b) - 2, hu = pTop[i] * k, hd = pBot[i] * k, r = Math.min(4, w / 2);
+    if (hu > 0) {
+      el("rect", { x, y: y0 - hu, width: w, height: hu, rx: r, fill: css("--s1") }, svg);
+      el("rect", { x, y: y0 - Math.min(4, hu), width: w, height: Math.min(4, hu), fill: css("--s1") }, svg);
+    }
+    if (hd > 0) {
+      el("rect", { x, y: y0, width: w, height: hd, rx: r, fill: css("--s2") }, svg);
+      el("rect", { x, y: y0, width: w, height: Math.min(4, hd), fill: css("--s2") }, svg);
+    }
+    const zt = el("rect", { x: X(b), y: m.t, width: X(b + step) - X(b), height: y0 - m.t, fill: "transparent" }, svg);
+    zt.addEventListener("pointermove", ev => showTip(`<b>${b}–${b + step} €</b><br>🤑 ${fmtN(h.counts[i])} annonce${h.counts[i] > 1 ? "s" : ""} en ligne (${pTop[i].toFixed(1).replace(".", ",")} %)`, ev));
+    zt.addEventListener("pointerleave", hideTip);
+    const zb = el("rect", { x: X(b), y: y0, width: X(b + step) - X(b), height: plotH / 2, fill: "transparent" }, svg);
+    zb.addEventListener("pointermove", ev => showTip(`<b>${b}–${b + step} €</b><br>🐦 ${sold[i]} vente${sold[i] > 1 ? "s" : ""} détectée${sold[i] > 1 ? "s" : ""} (${pBot[i].toFixed(1).replace(".", ",")} %)`, ev));
+    zb.addEventListener("pointerleave", hideTip);
   });
-  el("line", { x1: m.l, x2: W - m.r, y1: Y(0), y2: Y(0), stroke: css("--axis") }, svg);
-  for (let v = x0; v <= x1; v += 50) el("text", { x: X(v), y: H - 8, "text-anchor": "middle" }, svg).textContent = v + " €";
+  el("line", { x1: m.l, x2: W - m.r, y1: y0, y2: y0, stroke: css("--axis"), "stroke-width": 1 }, svg);
+
   const mx = X(h.mediane);
-  el("line", { x1: mx, x2: mx, y1: 4, y2: H - m.b, stroke: css("--ink"), "stroke-width": 1.2 }, svg);
-  el("text", { x: mx + 6, y: 13, class: "ink" }, svg).textContent = "médiane " + eur(h.mediane);
-  const sy = plotB + stripH / 2 + 4;
-  el("text", { x: m.l, y: plotB + 12 }, svg).textContent = "Pigeons 🐦 (dernier prix affiché)";
-  if (!D.ventes_prix.length) el("text", { x: X((x0 + x1) / 2), y: sy + 4, "text-anchor": "middle" }, svg).textContent = "aucun pigeon détecté pour l'instant";
-  D.ventes_prix.forEach((p, i) => {
-    const c = el("circle", { cx: X(Math.min(Math.max(p, x0), x1)), cy: sy + ((i % 3) - 1) * 6, r: 4.5, fill: css("--s2"), stroke: css("--surface"), "stroke-width": 2 }, svg);
-    c.addEventListener("pointermove", ev => showTip(`<b>Pigeon 🐦</b><br>dernier prix affiché : ${eur(p)}`, ev));
-    c.addEventListener("pointerleave", hideTip);
-  });
+  el("line", { x1: mx, x2: mx, y1: 6, y2: y0, stroke: css("--ink"), "stroke-width": 1.2 }, svg);
+  el("text", { x: mx + 6, y: 15, class: "ink" }, svg).textContent = "médiane " + eur(h.mediane);
+  el("text", { x: m.l + 6, y: m.t + 12, class: "ink2" }, svg).textContent = "Scalpers 🤑";
+  el("text", { x: m.l + 6, y: H - m.b - 6, class: "ink2" }, svg).textContent = "Pigeons 🐦";
+  if (!nS) {
+    el("text", { x: X((x0 + x1) / 2), y: y0 + half / 2, "text-anchor": "middle" }, svg).textContent = "aucun pigeon détecté pour l'instant";
+  } else if (D.kpi.vente_med != null) {
+    const vx = X(D.kpi.vente_med);
+    el("line", { x1: vx, x2: vx, y1: y0, y2: H - m.b + 4, stroke: css("--s2"), "stroke-width": 1.5 }, svg);
+    el("text", { x: vx, y: H - m.b + 17, "text-anchor": "middle", class: "ink" }, svg).textContent = "médiane " + eur(D.kpi.vente_med);
+  }
 }
 
 // ---------- rendu ----------
@@ -278,7 +303,6 @@ function render() {
   $("#maj span").textContent = D.maj_local ? `Dernière mise à jour : ${D.maj_local} (${D.fuseau})` : "Aucune donnée pour l'instant";
   if (C && C.complet === 0) $("#maj").classList.add("alerte");
 
-  const dl = K.delai_h == null ? "–" : (K.delai_h < 48 ? Math.round(K.delai_h) + " h" : (K.delai_h / 24).toFixed(1).replace(".", ",") + " j");
   const tiles = [];
   const PO = D.prix_officiel, x1 = n => "×" + n.toFixed(1).replace(".", ","), hasPO = PO && K.multiple_lo != null;
   if (hasPO) {
@@ -291,8 +315,6 @@ function render() {
     s: K.q1 != null ? `50 % des annonces entre ${eur(K.q1)} et ${eur(K.q3)}` : "" });
   tiles.push({ l: "Scalpers en ligne 🤑", v: fmtN(K.en_ligne), s: `annonces dans la bande ${D.bande[0]}–${D.bande[1]} €` });
   tiles.push({ l: "Pigeons 🐦", v: fmtN(K.vendues), s: `ventes détectées, dont ${fmtN(K.vendues_7j)} sur les 7 derniers jours` });
-  tiles.push({ l: "Un pigeon craque en (médiane)", v: dl, s: K.delai_n >= 5 ? `sur ${K.delai_n} ventes, depuis la 1re observation` : "trop peu de ventes pour l'instant" });
-  tiles.push({ l: "Scalpers qui baissent 📉", v: fmtN(K.baisses), s: `${fmtN(K.hausses)} hausse${K.hausses > 1 ? "s" : ""}` + (K.baisse_med != null ? ` · baisse médiane ${K.baisse_med.toFixed(0)} %` : "") });
   $("#kpis").innerHTML = tiles.map(t => `<div class="tile ${t.c || ""}"><div class="l">${t.l}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`).join("");
 
   const P = D.passages.map(p => ({ t: tsMs(p.ts), y: p.med, lo: p.q1, hi: p.q3, n: p.n, creux: p.complet === 0 }));
@@ -309,7 +331,8 @@ function render() {
   if (D.hist.total) $("#h-hist").textContent = D.ventes_prix.length >= 5 && D.kpi.vente_med != null
     ? `Les pigeons paient autour de ${eur(D.kpi.vente_med)}, les scalpers en demandent ${eur(D.hist.mediane)}` : "Répartition des prix";
   histChart($("#c-hist"));
-  table($("#t-hist"), ["Tranche", "Annonces en ligne"], D.hist.bins.map((b, i) => [`${b}–${b + D.hist.step} €`, fmtN(D.hist.counts[i])]));
+  const sc = binCounts(D.hist, D.ventes_prix);
+  table($("#t-hist"), ["Tranche", "Annonces en ligne", "Ventes détectées"], D.hist.bins.map((b, i) => [`${b}–${b + D.hist.step} €`, fmtN(D.hist.counts[i]), fmtN(sc[i])]));
 
   const E = D.ecartees;
   $("#methode").innerHTML = `<h2>Méthode et limites</h2>
@@ -317,7 +340,6 @@ function render() {
    <li><strong>Périmètre :</strong> annonces Vinted dont le titre contient « ETB » et le nombre 30, hors annonces d'acheteurs (« recherche… »), au prix demandé entre ${D.bande[0]} et ${D.bande[1]} €, hors lots et éditions étrangères.</li>
    <li><strong>Prix :</strong> dernier prix affiché, hors frais. C'est une borne haute du prix réel : Vinted permet des offres négociées que l'on ne voit pas.</li>
    <li><strong>Vente détectée :</strong> l'annonce quitte la recherche et sa page n'est plus achetable sans avoir été supprimée ni masquée. Cette règle est déduite de l'observation, pas confirmée par Vinted.</li>
-   <li><strong>Délai :</strong> mesuré depuis la première observation de l'annonce, et le moment de la vente est connu à l'intervalle entre deux passages près.</li>
    <li><strong>Couverture :</strong> la recherche de Vinted est plafonnée et dépend des mots employés. Chaque passage lit toutes les formulations connues par tranches de prix, à partir de ${D.bande[0]} €, mais on ne peut pas garantir de voir 100 % des annonces.${C ? ` Dernier passage : couverture ${C.complet ? "prouvée" : "<strong>non prouvée</strong>"}, ${fmtN(C.pages)} pages lues, ${fmtN(C.fuites)} annonce${C.fuites > 1 ? "s" : ""} hors balayage détectée${C.fuites > 1 ? "s" : ""}.` : ""}</li>
   </ul>
   <div class="chips" aria-label="Annonces écartées des statistiques">
