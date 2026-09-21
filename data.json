@@ -1,5 +1,5 @@
 {
- "maj_local": "21/09/2026 à 09:25",
+ "maj_local": "21/09/2026 à 10:00",
  "fuseau": "heure de Paris",
  "bande": [
   100,
@@ -10,7 +10,7 @@
   "hi": 70.0
  },
  "kpi": {
-  "en_ligne": 1122,
+  "en_ligne": 1130,
   "mediane": 200.0,
   "q1": 190.0,
   "q3": 228.0,
@@ -19,7 +19,7 @@
   "delai_h": 5.383333333333334,
   "delai_n": 113,
   "vente_med": 185.0,
-  "baisses": 123,
+  "baisses": 129,
   "hausses": 8,
   "baisse_med": 5.263157894736842,
   "multiple_lo": 2.857142857142857,
@@ -95,6 +95,16 @@
    "complet": 1,
    "med_vente": 190.0,
    "n_ventes": 10
+  },
+  {
+   "ts": "2026-09-21 08:00",
+   "n": 1121,
+   "med": 200.0,
+   "q1": 190.0,
+   "q3": 230.0,
+   "complet": 1,
+   "med_vente": null,
+   "n_ventes": 0
   }
  ],
  "hist": {
@@ -125,25 +135,25 @@
    7,
    3,
    5,
-   1,
-   1,
+   2,
+   0,
+   12,
    11,
-   10,
    26,
-   89,
-   201,
-   298,
-   92,
-   99,
+   93,
+   202,
+   299,
+   91,
+   98,
    42,
    24,
    99,
    16,
    16,
    12,
-   70
+   72
   ],
-  "total": 1122,
+  "total": 1130,
   "mediane": 200.0
  },
  "ventes_prix": [
@@ -272,15 +282,15 @@
   }
  ],
  "ecartees": {
-  "hors_bande": 560,
-  "lots": 142,
-  "etranger": 414
+  "hors_bande": 566,
+  "lots": 141,
+  "etranger": 424
  },
  "couverture": {
-  "ts": "2026-09-21 07:25",
+  "ts": "2026-09-21 08:00",
   "complet": 1,
-  "pages": 306,
-  "tranches": 85,
-  "fuites": 17
+  "pages": 286,
+  "tranches": 84,
+  "fuites": 16
  }
 }
