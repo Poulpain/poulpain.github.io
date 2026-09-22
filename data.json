@@ -1,5 +1,5 @@
 {
- "maj_local": "22/09/2026 à 17:30",
+ "maj_local": "22/09/2026 à 21:20",
  "fuseau": "heure de Paris",
  "bande": [
   100,
@@ -11,18 +11,18 @@
  },
  "goatcounter": "poulpain",
  "kpi": {
-  "en_ligne": 1175,
+  "en_ligne": 1254,
   "mediane": 200.0,
   "q1": 190.0,
-  "q3": 225.0,
-  "vendues": 240,
-  "vendues_7j": 240,
+  "q3": 220.0,
+  "vendues": 241,
+  "vendues_7j": 241,
   "delai_h": 7.616666666666666,
-  "delai_n": 240,
+  "delai_n": 241,
   "vente_med": 185.0,
-  "baisses": 275,
-  "hausses": 17,
-  "baisse_med": 5.263157894736842,
+  "baisses": 296,
+  "hausses": 18,
+  "baisse_med": 5.372775372775372,
   "multiple_lo": 2.857142857142857,
   "multiple_hi": 3.6363636363636362
  },
@@ -75,7 +75,7 @@
    "q3": 229.0,
    "complet": 1,
    "med_vente": 185.0,
-   "n_ventes": 24
+   "n_ventes": 25
   },
   {
    "ts": "2026-09-21 05:04",
@@ -186,6 +186,16 @@
    "complet": 1,
    "med_vente": 180.0,
    "n_ventes": 12
+  },
+  {
+   "ts": "2026-09-22 19:20",
+   "n": 1164,
+   "med": 200.0,
+   "q1": 190.0,
+   "q3": 225.0,
+   "complet": 0,
+   "med_vente": null,
+   "n_ventes": 0
   }
  ],
  "hist": {
@@ -213,28 +223,28 @@
    290
   ],
   "counts": [
+   7,
    6,
    6,
-   5,
    1,
    2,
+   17,
+   20,
+   32,
+   114,
+   233,
+   339,
+   94,
+   87,
+   46,
+   34,
+   109,
+   13,
    14,
-   15,
-   25,
-   100,
-   214,
-   320,
-   88,
-   91,
-   44,
-   31,
-   106,
    12,
-   14,
-   12,
-   69
+   68
   ],
-  "total": 1175,
+  "total": 1254,
   "mediane": 200.0
  },
  "ventes_prix": [
@@ -472,6 +482,7 @@
   220.0,
   220.0,
   220.0,
+  220.0,
   230.0,
   249.99,
   300.0,
@@ -482,7 +493,7 @@
  "ventes_jour": [
   {
    "jour": "2026-09-20",
-   "n": 85
+   "n": 86
   },
   {
    "jour": "2026-09-21",
@@ -494,15 +505,15 @@
   }
  ],
  "ecartees": {
-  "hors_bande": 781,
-  "lots": 161,
-  "etranger": 629
+  "hors_bande": 797,
+  "lots": 170,
+  "etranger": 636
  },
  "couverture": {
-  "ts": "2026-09-22 15:30",
-  "complet": 1,
-  "pages": 244,
-  "tranches": 74,
-  "fuites": 16
+  "ts": "2026-09-22 19:20",
+  "complet": 0,
+  "pages": 261,
+  "tranches": 71,
+  "fuites": 0
  }
 }
