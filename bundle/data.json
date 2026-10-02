@@ -1,0 +1,189 @@
+{
+ "maj_local": "02/10/2026 à 13:00",
+ "fuseau": "heure de Paris",
+ "bande": [
+  50,
+  150
+ ],
+ "prix_officiel": {
+  "lo": 35.99,
+  "hi": 35.99
+ },
+ "goatcounter": "poulpain",
+ "produit": {
+  "cle": "bundle",
+  "nom": "Bundle Pokémon 30 ans",
+  "un": "un bundle",
+  "pas": 5,
+  "chemin": "bundle"
+ },
+ "kpi": {
+  "en_ligne": 340,
+  "mediane": 85.0,
+  "q1": 79.9,
+  "q3": 90.0,
+  "vendues": 0,
+  "vendues_7j": 0,
+  "delai_h": null,
+  "delai_n": 0,
+  "vente_med": null,
+  "baisses": 0,
+  "hausses": 0,
+  "baisse_med": null,
+  "multiple_lo": 2.361767157543762,
+  "multiple_hi": 2.361767157543762
+ },
+ "passages": [
+  {
+   "ts": "2026-10-02 11:00",
+   "n": 340,
+   "med": 85.0,
+   "q1": 79.9,
+   "q3": 90.0,
+   "complet": 0,
+   "med_vente": null,
+   "n_ventes": 0
+  }
+ ],
+ "hist": {
+  "step": 5,
+  "bins": [
+   50,
+   55,
+   60,
+   65,
+   70,
+   75,
+   80,
+   85,
+   90,
+   95,
+   100,
+   105,
+   110,
+   115,
+   120,
+   125,
+   130,
+   135,
+   140,
+   145
+  ],
+  "counts": [
+   1,
+   0,
+   0,
+   2,
+   9,
+   81,
+   70,
+   50,
+   46,
+   20,
+   36,
+   4,
+   8,
+   3,
+   3,
+   0,
+   4,
+   0,
+   1,
+   2
+  ],
+  "total": 340,
+  "mediane": 85.0
+ },
+ "ventes_prix": [],
+ "ventes_jour": [],
+ "jours": [
+  {
+   "date": "2026-10-02",
+   "nouvelles": 0,
+   "med_offre": 85.0,
+   "n_offre": 340,
+   "ventes": 0,
+   "prix_ventes": [],
+   "retirees": 0,
+   "baisses": 0,
+   "baisse_med": null,
+   "med_vente": null,
+   "hist": {
+    "counts": [
+     1,
+     0,
+     0,
+     2,
+     9,
+     81,
+     70,
+     50,
+     46,
+     20,
+     36,
+     4,
+     8,
+     3,
+     3,
+     0,
+     4,
+     0,
+     1,
+     2
+    ],
+    "total": 340
+   }
+  }
+ ],
+ "resume_jour": {
+  "date": "2026-10-02",
+  "nouvelles": 0,
+  "med_offre": 85.0,
+  "n_offre": 340,
+  "ventes": 0,
+  "prix_ventes": [],
+  "retirees": 0,
+  "baisses": 0,
+  "baisse_med": null,
+  "med_vente": null,
+  "hist": {
+   "counts": [
+    1,
+    0,
+    0,
+    2,
+    9,
+    81,
+    70,
+    50,
+    46,
+    20,
+    36,
+    4,
+    8,
+    3,
+    3,
+    0,
+    4,
+    0,
+    1,
+    2
+   ],
+   "total": 340
+  },
+  "jour_precedent": null,
+  "med_offre_delta": null
+ },
+ "ecartees": {
+  "hors_bande": 114,
+  "lots": 135,
+  "etranger": 35
+ },
+ "couverture": {
+  "ts": "2026-10-02 11:00",
+  "complet": 0,
+  "pages": 13,
+  "tranches": 14,
+  "fuites": 177
+ }
+}
