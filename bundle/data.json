@@ -1,5 +1,5 @@
 {
- "maj_local": "05/10/2026 à 10:29",
+ "maj_local": "05/10/2026 à 23:59",
  "fuseau": "heure de Paris",
  "bande": [
   50,
@@ -18,17 +18,17 @@
   "chemin": "bundle"
  },
  "kpi": {
-  "en_ligne": 1125,
+  "en_ligne": 1196,
   "mediane": 80.0,
-  "q1": 80.0,
+  "q1": 79.9375,
   "q3": 90.0,
-  "vendues": 274,
-  "vendues_7j": 274,
+  "vendues": 275,
+  "vendues_7j": 275,
   "delai_h": 21.516666666666666,
-  "delai_n": 274,
+  "delai_n": 275,
   "vente_med": 75.0,
-  "baisses": 415,
-  "hausses": 14,
+  "baisses": 439,
+  "hausses": 16,
   "baisse_med": 6.25,
   "multiple_lo": 2.2228396776882464,
   "multiple_hi": 2.2228396776882464
@@ -81,8 +81,8 @@
    "q1": 79.0,
    "q3": 90.0,
    "complet": 1,
-   "med_vente": 72.2,
-   "n_ventes": 43
+   "med_vente": 71.1,
+   "n_ventes": 44
   },
   {
    "ts": "2026-10-04 08:28",
@@ -113,6 +113,16 @@
    "complet": 1,
    "med_vente": 75.0,
    "n_ventes": 31
+  },
+  {
+   "ts": "2026-10-05 21:59",
+   "n": 376,
+   "med": 84.995,
+   "q1": 79.9,
+   "q3": 90.0,
+   "complet": 0,
+   "med_vente": null,
+   "n_ventes": 0
   }
  ],
  "hist": {
@@ -140,31 +150,32 @@
    145
   ],
   "counts": [
-   9,
-   6,
-   9,
+   12,
+   10,
+   10,
    4,
-   28,
-   223,
-   338,
-   200,
-   124,
-   46,
-   76,
-   7,
-   19,
+   33,
+   248,
+   348,
+   207,
+   135,
+   45,
+   78,
+   8,
+   22,
    6,
-   13,
+   12,
    2,
    4,
    0,
-   1,
+   2,
    10
   ],
-  "total": 1125,
+  "total": 1196,
   "mediane": 80.0
  },
  "ventes_prix": [
+  50.0,
   50.0,
   55.0,
   60.0,
@@ -443,7 +454,7 @@
  "ventes_jour": [
   {
    "jour": "2026-10-03",
-   "n": 146
+   "n": 147
   },
   {
    "jour": "2026-10-04",
@@ -500,8 +511,9 @@
    "nouvelles": 394,
    "med_offre": 80.0,
    "n_offre": 1240,
-   "ventes": 146,
+   "ventes": 147,
    "prix_ventes": [
+    50.0,
     55.0,
     60.0,
     62.0,
@@ -652,7 +664,7 @@
    "stock_partiel": false,
    "lacune": false,
    "corrige": false,
-   "retirees": 434,
+   "retirees": 433,
    "baisses": 201,
    "baisse_med": 6.25,
    "med_vente": 75.0,
@@ -790,7 +802,7 @@
    "stock_partiel": false,
    "lacune": false,
    "corrige": false,
-   "retirees": 245,
+   "retirees": 244,
    "baisses": 109,
    "baisse_med": 6.25,
    "med_vente": 75.0,
@@ -822,7 +834,7 @@
   },
   {
    "date": "2026-10-05",
-   "nouvelles": 40,
+   "nouvelles": 110,
    "med_offre": 80.0,
    "n_offre": 1109,
    "ventes": 31,
@@ -863,8 +875,8 @@
    "lacune": false,
    "corrige": false,
    "retirees": 43,
-   "baisses": 17,
-   "baisse_med": 6.666666666666667,
+   "baisses": 40,
+   "baisse_med": 6.458333333333334,
    "med_vente": 75.0,
    "hist": {
     "counts": [
@@ -895,7 +907,7 @@
  ],
  "resume_jour": {
   "date": "2026-10-05",
-  "nouvelles": 40,
+  "nouvelles": 110,
   "med_offre": 80.0,
   "n_offre": 1109,
   "ventes": 31,
@@ -936,8 +948,8 @@
   "lacune": false,
   "corrige": false,
   "retirees": 43,
-  "baisses": 17,
-  "baisse_med": 6.666666666666667,
+  "baisses": 40,
+  "baisse_med": 6.458333333333334,
   "med_vente": 75.0,
   "hist": {
    "counts": [
@@ -968,15 +980,15 @@
   "med_offre_delta": 0.0
  },
  "ecartees": {
-  "hors_bande": 474,
-  "lots": 473,
-  "etranger": 260
+  "hors_bande": 516,
+  "lots": 504,
+  "etranger": 321
  },
  "couverture": {
-  "ts": "2026-10-05 08:29",
-  "complet": 1,
-  "pages": 234,
-  "tranches": 46,
-  "fuites": 16
+  "ts": "2026-10-05 21:59",
+  "complet": 0,
+  "pages": 188,
+  "tranches": 20,
+  "fuites": 29
  }
 }
