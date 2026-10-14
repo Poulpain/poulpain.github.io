@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scalpers et pigeons : l'ETB Pokémon 30 ans sur Vinted</title>
-<meta name="description" content="Combien de scalpers, combien de pigeons, à quel prix : l'ETB Pokémon 30e anniversaire sur Vinted, mis à jour automatiquement.">
+<meta name="description" content="Combien de scalpers, combien de pigeons, à quel prix : l'ETB Pokémon 30 ans sur Vinted, mis à jour automatiquement.">
 <style>
 :root {
   color-scheme: light;
@@ -34,6 +34,10 @@ header p { margin: 0; color: var(--ink2); }
 .conseil { margin: 0 0 14px; padding: 12px 16px; border: 1px solid var(--border); border-left: 4px solid var(--s2);
   border-radius: 12px; background: var(--surface); color: var(--ink2); }
 .conseil strong { color: var(--ink); }
+.resume { margin-bottom: 14px; }
+.resume-row { display: flex; flex-wrap: wrap; gap: 18px 32px; margin-top: 4px; }
+.resume-row .v { font-size: 26px; font-weight: 650; color: var(--ink); line-height: 1.2; }
+.resume-row .l { font-size: 12.5px; color: var(--ink2); margin-top: 2px; }
 .grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } .grid .large { grid-column: span 2; } }
 .card { padding: 16px 16px 12px; min-width: 0; }
@@ -78,6 +82,7 @@ footer { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
 
   <section class="kpis" id="kpis" aria-label="Chiffres clés"></section>
   <p class="conseil">💡 <strong>Ne soyez pas le pigeon :</strong> tant qu'il y aura des pigeons, il y aura des scalpers.</p>
+  <section class="card resume" id="resume-jour"></section>
 
   <section class="grid">
     <article class="card large">
@@ -292,9 +297,28 @@ function histChart(host) {
 
 // ---------- rendu ----------
 function render() {
-  const K = D.kpi, C = D.couverture;
+  const K = D.kpi, C = D.couverture, RJ = D.resume_jour;
+  const jourFR = iso => new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "long" }).format(new Date(iso + "T12:00:00Z"));
+  const jourCourt = iso => new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "2-digit" }).format(new Date(iso + "T12:00:00Z"));
+  const elResume = $("#resume-jour");
+  if (RJ) {
+    const delta = RJ.med_offre_delta;
+    const deltaHtml = delta == null ? "" : ` <span style="color:${delta > 0 ? "var(--s2)" : delta < 0 ? "var(--s1)" : "var(--muted)"}">(${delta > 0 ? "+" : ""}${Math.round(delta)} € vs ${RJ.jour_precedent ? jourCourt(RJ.jour_precedent) : "veille"})</span>`;
+    elResume.innerHTML = `<h2>Résumé du ${jourFR(RJ.date)}</h2>
+      <div class="resume-row">
+        <div><div class="v">${fmtN(RJ.nouvelles)}</div><div class="l">nouveaux scalpers 🤑</div></div>
+        <div><div class="v">${fmtN(RJ.ventes)}</div><div class="l">pigeons 🐦 du jour</div></div>
+        <div><div class="v">${eur(RJ.med_offre)}${deltaHtml}</div><div class="l">prix médian demandé</div></div>
+        <div><div class="v">${eur(RJ.med_vente)}</div><div class="l">prix médian vendu</div></div>
+      </div>
+      <details><summary>Voir l'historique par jour</summary><div id="t-jours"></div></details>`;
+    table($("#t-jours"), ["Jour", "Nouvelles annonces", "Ventes", "Prix médian demandé", "Prix médian vendu"],
+      D.jours.slice().reverse().map(j => [j.date, fmtN(j.nouvelles), fmtN(j.ventes), eur(j.med_offre), eur(j.med_vente)]));
+  } else {
+    elResume.remove();
+  }
   $("#maj span").textContent = D.maj_local ? `Dernière mise à jour : ${D.maj_local} (${D.fuseau})` : "Aucune donnée pour l'instant";
-  if (C && C.complet === 0) $("#maj").classList.add("alerte");
+  if (C && (C.complet === 0 || C.complet === 2)) $("#maj").classList.add("alerte");
 
   const tiles = [];
   const PO = D.prix_officiel, x1 = n => "×" + n.toFixed(1).replace(".", ","), hasPO = PO && K.multiple_lo != null;
@@ -310,12 +334,12 @@ function render() {
   tiles.push({ l: "Pigeons 🐦", v: fmtN(K.vendues), s: `ventes détectées, dont ${fmtN(K.vendues_7j)} sur les 7 derniers jours` });
   $("#kpis").innerHTML = tiles.map(t => `<div class="tile ${t.c || ""}"><div class="l">${t.l}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`).join("");
 
-  const P = D.passages.map(p => ({ t: tsMs(p.ts), y: p.med, lo: p.q1, hi: p.q3, n: p.n, creux: p.complet === 0 }));
+  const P = D.passages.map(p => ({ t: tsMs(p.ts), y: p.med, lo: p.q1, hi: p.q3, n: p.n, creux: p.complet === 0 || p.complet === 2 }));
   const P2 = D.passages.filter(p => p.med_vente != null).map(p => ({ t: tsMs(p.ts), y: p.med_vente, n: p.n_ventes }));
   lineChart($("#c-prix"), P.filter(p => p.y != null), { aria: "Prix médian demandé et prix médian des ventes détectées, par passage", name: "prix demandé", name2: "prix des ventes", fmt: eur, pts2: P2 });
   table($("#t-prix"), ["Passage", "Médiane demandée", "Q1", "Q3", "Annonces", "Ventes", "Médiane des ventes"], D.passages.map(p => [fmtT(tsMs(p.ts)), eur(p.med), eur(p.q1), eur(p.q3), fmtN(p.n), fmtN(p.n_ventes), eur(p.med_vente)]));
   lineChart($("#c-n"), P.map(p => ({ t: p.t, y: p.n, creux: p.creux })), { aria: "Nombre d'annonces en ligne par passage", name: "annonces", fmt: fmtN, zero: true });
-  table($("#t-n"), ["Passage", "Annonces", "Couverture"], D.passages.map(p => [fmtT(tsMs(p.ts)), fmtN(p.n), p.complet === 0 ? "non prouvée" : (p.complet === 1 ? "prouvée" : "–")]));
+  table($("#t-n"), ["Passage", "Annonces", "Couverture"], D.passages.map(p => [fmtT(tsMs(p.ts)), fmtN(p.n), p.complet === 0 ? "non prouvée" : (p.complet === 1 ? "prouvée" : (p.complet === 2 ? "partielle (zones non lues)" : "–"))]));
 
   $("#s-ventes").textContent = D.ventes_jour.length ? `${fmtN(K.vendues)} pigeons depuis le début du suivi (${D.fuseau}).` : "Un pigeon = une annonce sortie du catalogue et devenue non achetable.";
   barChart($("#c-ventes"), D.ventes_jour.map(v => ({ lab: v.jour.slice(8, 10) + "/" + v.jour.slice(5, 7), v: v.n })),
