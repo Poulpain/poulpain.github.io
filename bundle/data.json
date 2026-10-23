@@ -1,5 +1,5 @@
 {
- "maj_local": "22/10/2026 à 23:54",
+ "maj_local": "23/10/2026 à 10:52",
  "fuseau": "heure de Paris",
  "bande": [
   50,
@@ -18,7 +18,7 @@
   "chemin": "bundle"
  },
  "kpi": {
-  "en_ligne": 2325,
+  "en_ligne": 2344,
   "mediane": 80.0,
   "q1": 75.0,
   "q3": 85.0,
@@ -353,6 +353,16 @@
    "complet": 0,
    "med_vente": null,
    "n_ventes": 0
+  },
+  {
+   "ts": "2026-10-23 08:52",
+   "n": 56,
+   "med": 70.0,
+   "q1": 50.0,
+   "q3": 76.2475,
+   "complet": 0,
+   "med_vente": null,
+   "n_ventes": 0
   }
  ],
  "hist": {
@@ -380,13 +390,13 @@
    145
   ],
   "counts": [
-   66,
-   37,
+   67,
+   38,
    30,
    46,
-   237,
-   605,
-   540,
+   243,
+   612,
+   542,
    294,
    185,
    70,
@@ -399,9 +409,9 @@
    8,
    2,
    8,
-   36
+   38
   ],
-  "total": 2325,
+  "total": 2344,
   "mediane": 80.0
  },
  "ventes_prix": [
@@ -1676,13 +1686,54 @@
     ],
     "total": 50
    }
+  },
+  {
+   "date": "2026-10-23",
+   "nouvelles": 19,
+   "med_offre": 70.0,
+   "n_offre": 56,
+   "ventes": 0,
+   "prix_ventes": [],
+   "stock_partiel": true,
+   "stock_estime": false,
+   "lacune": false,
+   "corrige": false,
+   "retirees": 0,
+   "baisses": 0,
+   "baisse_med": null,
+   "med_vente": null,
+   "hist": {
+    "counts": [
+     21,
+     5,
+     0,
+     0,
+     8,
+     9,
+     7,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     1,
+     0,
+     0,
+     2
+    ],
+    "total": 56
+   }
   }
  ],
  "resume_jour": {
-  "date": "2026-10-22",
-  "nouvelles": 82,
+  "date": "2026-10-23",
+  "nouvelles": 19,
   "med_offre": 70.0,
-  "n_offre": 50,
+  "n_offre": 56,
   "ventes": 0,
   "prix_ventes": [],
   "stock_partiel": true,
@@ -1690,47 +1741,47 @@
   "lacune": false,
   "corrige": false,
   "retirees": 0,
-  "baisses": 1,
-  "baisse_med": 5.405405405405405,
+  "baisses": 0,
+  "baisse_med": null,
   "med_vente": null,
   "hist": {
    "counts": [
-    19,
-    4,
+    21,
+    5,
     0,
     0,
-    6,
     8,
-    6,
+    9,
+    7,
     2,
-    1,
-    1,
     0,
     0,
     0,
     0,
-    1,
+    0,
     0,
     1,
     0,
     1,
-    0
+    0,
+    0,
+    2
    ],
-   "total": 50
+   "total": 56
   },
-  "jour_precedent": "2026-10-21",
-  "med_offre_delta": -4.0
+  "jour_precedent": "2026-10-22",
+  "med_offre_delta": 0.0
  },
  "ecartees": {
-  "hors_bande": 1147,
-  "lots": 998,
-  "etranger": 1180
+  "hors_bande": 1164,
+  "lots": 1012,
+  "etranger": 1195
  },
  "couverture": {
-  "ts": "2026-10-22 21:54",
+  "ts": "2026-10-23 08:52",
   "complet": 0,
   "pages": 188,
   "tranches": 20,
-  "fuites": 64
+  "fuites": 68
  }
 }
