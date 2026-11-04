@@ -1,5 +1,5 @@
 {
- "maj_local": "03/11/2026 à 23:21",
+ "maj_local": "04/11/2026 à 10:21",
  "fuseau": "heure de Paris",
  "bande": [
   50,
@@ -18,16 +18,16 @@
   "chemin": "bundle"
  },
  "kpi": {
-  "en_ligne": 985,
+  "en_ligne": 984,
   "mediane": 80.0,
   "q1": 75.0,
   "q3": 85.0,
-  "vendues": 883,
-  "vendues_7j": 605,
-  "delai_h": 108.51666666666667,
-  "delai_n": 883,
+  "vendues": 888,
+  "vendues_7j": 139,
+  "delai_h": 107.61666666666667,
+  "delai_n": 888,
   "vente_med": 72.0,
-  "baisses": 973,
+  "baisses": 978,
   "hausses": 45,
   "baisse_med": 6.666666666666667,
   "multiple_lo": 2.2228396776882464,
@@ -593,6 +593,16 @@
    "complet": 1,
    "med_vente": 70.0,
    "n_ventes": 19
+  },
+  {
+   "ts": "2026-11-04 09:21",
+   "n": 946,
+   "med": 80.0,
+   "q1": 75.0,
+   "q3": 85.0,
+   "complet": 1,
+   "med_vente": 77.5,
+   "n_ventes": 5
   }
  ],
  "hist": {
@@ -620,14 +630,14 @@
    145
   ],
   "counts": [
-   18,
+   17,
    19,
-   12,
+   13,
    24,
-   119,
+   116,
    267,
-   218,
-   103,
+   226,
+   98,
    84,
    25,
    42,
@@ -637,11 +647,11 @@
    7,
    2,
    11,
-   3,
+   2,
    4,
    13
   ],
-  "total": 985,
+  "total": 984,
   "mediane": 80.0
  },
  "ventes_prix": [
@@ -778,6 +788,7 @@
   68.0,
   68.0,
   68.0,
+  68.0,
   69.0,
   69.0,
   69.0,
@@ -827,6 +838,7 @@
   69.99,
   69.99,
   69.99,
+  70.0,
   70.0,
   70.0,
   70.0,
@@ -1363,6 +1375,7 @@
   77.5,
   77.5,
   77.5,
+  77.5,
   78.0,
   78.0,
   78.0,
@@ -1470,6 +1483,7 @@
   85.0,
   85.0,
   85.0,
+  85.0,
   87.5,
   89.0,
   89.0,
@@ -1502,6 +1516,7 @@
   130.0,
   130.0,
   134.0,
+  135.0,
   135.0,
   135.0,
   135.0,
@@ -1657,6 +1672,10 @@
   {
    "jour": "2026-11-03",
    "n": 24
+  },
+  {
+   "jour": "2026-11-04",
+   "n": 5
   }
  ],
  "jours": [
@@ -3418,7 +3437,7 @@
    "stock_estime": false,
    "lacune": false,
    "corrige": false,
-   "retirees": 38,
+   "retirees": 36,
    "baisses": 22,
    "baisse_med": 6.0661764705882355,
    "med_vente": 70.0,
@@ -3819,86 +3838,114 @@
     ],
     "total": 956
    }
+  },
+  {
+   "date": "2026-11-04",
+   "nouvelles": 10,
+   "med_offre": 80.0,
+   "n_offre": 946,
+   "ventes": 5,
+   "prix_ventes": [
+    68.0,
+    70.0,
+    77.5,
+    85.0,
+    135.0
+   ],
+   "stock_partiel": false,
+   "stock_estime": false,
+   "lacune": false,
+   "corrige": false,
+   "retirees": 8,
+   "baisses": 5,
+   "baisse_med": 5.88235294117647,
+   "med_vente": 77.5,
+   "hist": {
+    "counts": [
+     11,
+     13,
+     12,
+     22,
+     116,
+     265,
+     224,
+     92,
+     80,
+     25,
+     35,
+     5,
+     8,
+     1,
+     7,
+     2,
+     10,
+     2,
+     4,
+     12
+    ],
+    "total": 946
+   }
   }
  ],
  "resume_jour": {
-  "date": "2026-11-03",
-  "nouvelles": 50,
+  "date": "2026-11-04",
+  "nouvelles": 10,
   "med_offre": 80.0,
-  "n_offre": 956,
-  "ventes": 24,
+  "n_offre": 946,
+  "ventes": 5,
   "prix_ventes": [
-   60.0,
-   65.0,
-   65.0,
-   65.0,
-   65.0,
-   67.0,
    68.0,
-   68.0,
-   69.0,
-   69.5,
    70.0,
-   70.0,
-   70.0,
-   70.0,
-   70.0,
-   70.0,
-   70.0,
-   73.47,
-   75.0,
-   80.0,
-   80.0,
-   130.0,
-   130.0,
-   150.0
+   77.5,
+   85.0,
+   135.0
   ],
   "stock_partiel": false,
   "stock_estime": false,
   "lacune": false,
   "corrige": false,
-  "retirees": 42,
-  "baisses": 11,
-  "baisse_med": 6.666666666666667,
-  "med_vente": 70.0,
+  "retirees": 8,
+  "baisses": 5,
+  "baisse_med": 5.88235294117647,
+  "med_vente": 77.5,
   "hist": {
    "counts": [
-    12,
-    14,
     11,
+    13,
+    12,
     22,
-    119,
+    116,
     265,
-    217,
-    100,
-    82,
+    224,
+    92,
+    80,
     25,
-    36,
+    35,
     5,
     8,
     1,
     7,
     2,
     10,
-    3,
+    2,
     4,
-    13
+    12
    ],
-   "total": 956
+   "total": 946
   },
-  "jour_precedent": "2026-11-02",
+  "jour_precedent": "2026-11-03",
   "med_offre_delta": 0.0
  },
  "ecartees": {
-  "hors_bande": 1564,
+  "hors_bande": 1576,
   "lots": 920,
-  "etranger": 650
+  "etranger": 651
  },
  "couverture": {
-  "ts": "2026-11-03 22:21",
+  "ts": "2026-11-04 09:21",
   "complet": 1,
-  "pages": 71,
-  "tranches": 37,
-  "fuites": 8
+  "pages": 69,
+  "tranches": 31,
+  "fuites": 11
  }
 }
