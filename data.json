@@ -1,5 +1,5 @@
 {
- "maj_local": "20/11/2026 à 23:00",
+ "maj_local": "21/11/2026 à 10:00",
  "fuseau": "heure de Paris",
  "bande": [
   100,
@@ -18,17 +18,17 @@
   "chemin": ""
  },
  "kpi": {
-  "en_ligne": 1972,
+  "en_ligne": 1978,
   "mediane": 170.0,
   "q1": 150.0,
   "q3": 200.0,
-  "vendues": 2466,
-  "vendues_7j": 168,
+  "vendues": 2468,
+  "vendues_7j": 159,
   "delai_h": 24.0,
-  "delai_n": 2466,
+  "delai_n": 2468,
   "vente_med": 160.0,
-  "baisses": 4582,
-  "hausses": 265,
+  "baisses": 4585,
+  "hausses": 268,
   "baisse_med": 6.25,
   "multiple_lo": 2.4285714285714284,
   "multiple_hi": 3.090909090909091
@@ -1633,6 +1633,16 @@
    "complet": 1,
    "med_vente": 130.0,
    "n_ventes": 4
+  },
+  {
+   "ts": "2026-11-21 09:00",
+   "n": 1964,
+   "med": 170.0,
+   "q1": 150.0,
+   "q3": 200.0,
+   "complet": 1,
+   "med_vente": 140.0,
+   "n_ventes": 2
   }
  ],
  "hist": {
@@ -1662,17 +1672,17 @@
   "counts": [
    27,
    36,
-   51,
-   61,
-   179,
-   338,
-   208,
+   52,
+   64,
    176,
+   338,
+   210,
+   179,
    202,
-   143,
+   142,
    238,
    49,
-   48,
+   49,
    26,
    13,
    82,
@@ -1681,7 +1691,7 @@
    11,
    54
   ],
-  "total": 1972,
+  "total": 1978,
   "mediane": 170.0
  },
  "ventes_prix": [
@@ -2099,6 +2109,7 @@
   135.0,
   135.0,
   135.0,
+  135.0,
   135.9,
   135.99,
   136.0,
@@ -2386,6 +2397,7 @@
   144.99,
   144.99,
   144.99,
+  145.0,
   145.0,
   145.0,
   145.0,
@@ -4400,6 +4412,10 @@
   {
    "jour": "2026-11-20",
    "n": 19
+  },
+  {
+   "jour": "2026-11-21",
+   "n": 2
   }
  ],
  "jours": [
@@ -8409,7 +8425,7 @@
    "stock_estime": false,
    "lacune": false,
    "corrige": false,
-   "retirees": 133,
+   "retirees": 132,
    "baisses": 76,
    "baisse_med": 7.919254658385093,
    "med_vente": 135.0,
@@ -9167,7 +9183,7 @@
    "stock_estime": false,
    "lacune": false,
    "corrige": false,
-   "retirees": 62,
+   "retirees": 61,
    "baisses": 42,
    "baisse_med": 6.904761904761905,
    "med_vente": 137.5,
@@ -9445,58 +9461,85 @@
     ],
     "total": 1958
    }
+  },
+  {
+   "date": "2026-11-21",
+   "nouvelles": 16,
+   "med_offre": 170.0,
+   "n_offre": 1964,
+   "ventes": 2,
+   "prix_ventes": [
+    135.0,
+    145.0
+   ],
+   "stock_partiel": false,
+   "stock_estime": false,
+   "lacune": false,
+   "corrige": false,
+   "retirees": 10,
+   "baisses": 2,
+   "baisse_med": 6.458333333333334,
+   "med_vente": 140.0,
+   "hist": {
+    "counts": [
+     22,
+     34,
+     51,
+     64,
+     175,
+     338,
+     210,
+     178,
+     202,
+     142,
+     237,
+     49,
+     49,
+     26,
+     13,
+     82,
+     15,
+     14,
+     11,
+     52
+    ],
+    "total": 1964
+   }
   }
  ],
  "resume_jour": {
-  "date": "2026-11-20",
-  "nouvelles": 54,
+  "date": "2026-11-21",
+  "nouvelles": 16,
   "med_offre": 170.0,
-  "n_offre": 1958,
-  "ventes": 19,
+  "n_offre": 1964,
+  "ventes": 2,
   "prix_ventes": [
-   100.0,
-   105.0,
-   120.0,
-   130.0,
-   130.0,
-   130.0,
-   130.0,
-   130.0,
-   130.0,
    135.0,
-   135.0,
-   140.0,
-   140.0,
-   140.0,
-   140.0,
-   145.0,
-   150.0,
-   150.0,
-   159.0
+   145.0
   ],
   "stock_partiel": false,
   "stock_estime": false,
   "lacune": false,
   "corrige": false,
-  "retirees": 46,
-  "baisses": 34,
-  "baisse_med": 9.985380116959064,
-  "med_vente": 135.0,
+  "retirees": 10,
+  "baisses": 2,
+  "baisse_med": 6.458333333333334,
+  "med_vente": 140.0,
   "hist": {
    "counts": [
     22,
     34,
-    50,
-    61,
-    178,
-    338,
-    208,
+    51,
+    64,
     175,
+    338,
+    210,
+    178,
     202,
-    143,
+    142,
     237,
     49,
-    48,
+    49,
     26,
     13,
     82,
@@ -9505,18 +9548,18 @@
     11,
     52
    ],
-   "total": 1958
+   "total": 1964
   },
-  "jour_precedent": "2026-11-19",
+  "jour_precedent": "2026-11-20",
   "med_offre_delta": 0.0
  },
  "ecartees": {
-  "hors_bande": 2873,
-  "lots": 716,
-  "etranger": 1911
+  "hors_bande": 2880,
+  "lots": 717,
+  "etranger": 1907
  },
  "couverture": {
-  "ts": "2026-11-20 22:00",
+  "ts": "2026-11-21 09:00",
   "complet": 1,
   "pages": 181,
   "tranches": 30,
